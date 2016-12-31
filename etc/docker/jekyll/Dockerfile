@@ -2,10 +2,10 @@ FROM ubuntu:14.04
 MAINTAINER gavin <gavin2lee@163.com>
 ENV REFRESHED_AT 2016-12-30
 
-COPY sources.list.aliyun /etc/apt/sources.list
+COPY sources.list /etc/apt/sources.list
 
 RUN apt-get -yqq update
-RUN apt-get -yqq install ruby ruby-dev make nodejs
+RUN apt-get -yqq install ruby2.0 ruby2.0-dev make nodejs
 RUN gem install --no-rdoc --no-ri jekyll -v 2.5.3
 
 
