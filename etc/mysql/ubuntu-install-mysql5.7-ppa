@@ -1,0 +1,20 @@
+查看安装包情况
+sudo dpkg -l | grep mysql
+
+sudo apt-get autoremove --purge mysql-server-5.5
+sudo apt-get remove mysql-common
+
+清理残留安装软件
+dpkg -l |grep ^rc|awk '{print $2}' |sudo xargs dpkg -P 
+
+sudo add-apt-repository ppa:ondrej/mysql-5.7
+sudo apt-get update
+sudo apt-get upgrade
+sudo apt-get upgrade mysql-server mysql-client
+
+sudo /etc/init.d/mysql restart
+sudo mysqladmin -u root password newpassword
+
+create user gavin;
+grant all privileges on *.* to 'gavin@%' identified by '123456';
+
