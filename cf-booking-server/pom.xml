@@ -90,7 +90,7 @@
 				<configuration>
 					<uriEncoding>UTF-8</uriEncoding>
 					<port>9009</port>
-					<path>/chat</path>
+					<path>/cf-booking</path>
 				</configuration>
 			</plugin>
 
@@ -104,7 +104,7 @@
 					<stopPort>9999</stopPort>
 					<stopWait>10</stopWait>
 					<webApp>
-						<contextPath>/chat</contextPath>
+						<contextPath>/cf-booking</contextPath>
 					</webApp>
 					<httpConnector>
 						<port>9009</port>
