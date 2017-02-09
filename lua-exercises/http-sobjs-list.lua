@@ -1,5 +1,15 @@
 #!/usr/local/bin/lua
 print("http simple object client")
+--[[
+headers =
+               {
+                       ["Accept"] = "*/*",
+                       ["Accept-Encoding"] = "gzip, deflate",
+                       ["Accept-Language"] = "en-us",
+                       ["Content-Type"] = "application/x-www-form-urlencoded",
+                       ["content-length"] = string.len(reqbody)
+               },
+]]--
 
 local http = require("socket.http")
 local ltn12 = require "ltn12"
@@ -7,8 +17,8 @@ local ltn12 = require "ltn12"
 
 local respbody = {}
 
-host = host or "localhost"
-port = port or 9009
+local host = host or "localhost"
+local port = port or 9009
 
 if arg then
   host = arg[1] or host
