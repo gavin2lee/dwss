@@ -9,6 +9,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,7 +29,7 @@ public class SimpleTraceController {
 
 	private AtomicLong sobjIdGen = new AtomicLong();
 
-	@PostMapping(path = "/sobjs")
+	@PostMapping(path = "/sobjs",consumes={MediaType.APPLICATION_JSON_UTF8_VALUE})
 	public void create(@RequestBody SimpleObject sobj) {
 		LOG.debug(String.format("post:%s", sobj));
 		Long oid = sobjIdGen.incrementAndGet();
