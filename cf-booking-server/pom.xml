@@ -6,6 +6,7 @@
 		<groupId>com.gl.dwss</groupId>
 		<artifactId>cf-dependencies-bom</artifactId>
 		<version>1.0-SNAPSHOT</version>
+		<relativePath>../cf-dependencies-bom/pom.xml</relativePath>
 	</parent>
 
 	<artifactId>cf-booking-server</artifactId>
