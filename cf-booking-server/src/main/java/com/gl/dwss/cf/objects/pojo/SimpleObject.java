@@ -6,6 +6,7 @@ public class SimpleObject {
 	private Long oid;
 	private String content;
 	private Date createAt;
+	private Date updateAt;
 
 	public Long getOid() {
 		return oid;
@@ -29,6 +30,22 @@ public class SimpleObject {
 
 	public void setCreateAt(Date createAt) {
 		this.createAt = createAt;
+	}
+	
+	
+
+	public Date getUpdateAt() {
+		return updateAt;
+	}
+
+	public void setUpdateAt(Date updateAt) {
+		this.updateAt = updateAt;
+	}
+
+	@Override
+	public String toString() {
+		return "SimpleObject [oid=" + oid + ", content=" + content + ", createAt=" + createAt + ", updateAt=" + updateAt
+				+ "]";
 	}
 
 }

@@ -14,9 +14,8 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.gl.dwss.cf.objects.pojo.SimpleObject;
@@ -38,6 +37,24 @@ public class SimpleTraceController {
 
 		sobjs.put(oid, sobj);
 	}
+	
+	@PutMapping(path = "/sobjs")
+	public void update(@RequestBody SimpleObject sobj) {
+		LOG.debug(String.format("update:%s", sobj));
+		if(sobj.getOid() == null){
+			throw new IllegalStateException("oid should provide");
+		}
+		
+		SimpleObject oldObj = sobjs.get(sobj.getOid());
+		if(oldObj == null){
+			throw new IllegalStateException("no such object found");
+		}
+		
+		if(sobj.getContent() != null ){
+			oldObj.setContent(sobj.getContent());
+			oldObj.setUpdateAt(new Date());
+		}
+	}
 
 	@GetMapping(path = "/sobjs/{id}")
 	public SimpleObject get(@PathVariable("id") long oid) {
@@ -55,10 +72,5 @@ public class SimpleTraceController {
 	public void delete(@PathVariable("id") long oid) {
 		LOG.debug(String.format("delete:%s", oid));
 		sobjs.remove(oid);
-	}
-
-	@RequestMapping(path = "/sobjs", method = { RequestMethod.OPTIONS })
-	public void options() {
-		LOG.debug(String.format("options"));
 	}
 }
