@@ -29,13 +29,13 @@ public class SimpleTraceController {
 
 	private AtomicLong sobjIdGen = new AtomicLong();
 
-	@PostMapping(path = "/sobjs",consumes={MediaType.APPLICATION_JSON_UTF8_VALUE})
+	@PostMapping(path = "/sobjs", consumes = { MediaType.APPLICATION_JSON_UTF8_VALUE })
 	public void create(@RequestBody SimpleObject sobj) {
 		LOG.debug(String.format("post:%s", sobj));
 		Long oid = sobjIdGen.incrementAndGet();
 		sobj.setOid(oid);
 		sobj.setCreateAt(new Date());
-		
+
 		sobjs.put(oid, sobj);
 	}
 
@@ -60,10 +60,5 @@ public class SimpleTraceController {
 	@RequestMapping(path = "/sobjs", method = { RequestMethod.OPTIONS })
 	public void options() {
 		LOG.debug(String.format("options"));
-	}
-
-	@RequestMapping(path = "/sobjs", method = { RequestMethod.HEAD })
-	public void head() {
-		LOG.debug(String.format("head"));
 	}
 }
