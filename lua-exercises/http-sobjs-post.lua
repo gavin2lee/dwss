@@ -6,6 +6,23 @@ local respbody = {}
 local host = host or "localhost"
 local port = port or 9009
 
+local function getTableSize(x)
+  local ret = 0
+  if(x == nil) then
+    return ret
+  end
+
+  for lk,lv in pairs(x) do
+    if lk ~= nil then
+      ret = ret +1
+    else
+      print("nil key found")
+    end
+  end
+
+  return ret
+end
+
 if arg then
   host = arg[1] or host
   port = arg[2] or port
@@ -36,7 +53,7 @@ local  body, code, headers, status = http.request{
 }
 
 print("code:" .. code)
-if respbody and respbody ~= "" then
+if respbody ~= nil and getTableSize(respbody) > 0 then
   print("respbody:")
   for bk,bv in pairs(respbody) do
     print(bv)
