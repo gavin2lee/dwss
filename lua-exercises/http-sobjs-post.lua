@@ -31,6 +31,7 @@ end
 print("connect to " .. host .. ":" .. port)
 local surl = "http://" .. host .. ":" .. port .. "/cfbook/sobjs"
 local smethod = "POST"
+math.randomseed(tostring(os.time()):reverse():sub(1, 6))
 local randomNumber = math.random(1000,9999)
 local time = os.time()
 local content = "lua-test-" .. time .. randomNumber
@@ -59,3 +60,8 @@ if respbody ~= nil and getTableSize(respbody) > 0 then
     print(bv)
   end
 end
+
+--[[
+crontab -e
+*/1 * * * * /usr/local/bin/lua /home/gavin/Dev/GitRepo/dwss/lua-exercises/http-sobjs-post.lua >> /home/gavin/Dev/GitRepo/dwss/lua-exercises/lua-post.out 2>&1
+]]--
