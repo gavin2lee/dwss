@@ -14,5 +14,4 @@ public class GlobalAppProperties {
 		this.appName = appName;
 	}
 	
-	
 }
