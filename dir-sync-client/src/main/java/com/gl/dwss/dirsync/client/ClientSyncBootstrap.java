@@ -11,8 +11,13 @@ public class ClientSyncBootstrap {
 	
 
 	public static void main(String[] args) {
-		SpringApplication.run(ClientConfig.class, args);
+//		SpringApplication.run(ClientConfig.class, args);
+		SpringApplication app = new SpringApplication(ClientConfig.class);
+		app.setWebEnvironment(false);
+		app.run(args);
 		LOG.debug(ClientSyncBootstrap.class.getSimpleName() +  " started");
+		
+		
 	}
 
 }

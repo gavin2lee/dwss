@@ -46,6 +46,9 @@ public class ClientSyncFileDescriptor {
 	public void setChildFiles(List<ClientSyncFileDescriptor> childFiles) {
 		this.childFiles = childFiles;
 	}
-	
-	
+	@Override
+	public String toString() {
+		return "ClientSyncFileDescriptor [fileName=" + fileName + ", fullPath=" + fullPath + ", isDirectory="
+				+ isDirectory + ", suffix=" + suffix + ", fileAttrs=" + fileAttrs + ", childFiles=" + childFiles + "]";
+	}
 }
