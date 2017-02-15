@@ -20,47 +20,55 @@ public class DefaultDirSyncService implements DirSyncService {
 	private String rootDirPath = "/home/gavin/Dev/Books";
 
 	public SyncFileDescriptor scanRootDir() {
-		if(LOG.isTraceEnabled()){
+		if (LOG.isTraceEnabled()) {
 			LOG.trace(String.format("scan root directory at %s", new Date().toString()));
 		}
 		File rootDir = new File(rootDirPath);
 		SyncFileDescriptor rootDirFd = transformBasicDescription(rootDir);
-		((DirSyncFileDescriptor)rootDirFd).getChildFiles().addAll(scanChild(rootDir));
-		
+		((DirSyncFileDescriptor) rootDirFd).getChildFiles().addAll(scanChild(rootDir));
+
 		return rootDirFd;
 	}
-	
-	protected List<SyncFileDescriptor> scanChild(File parent){
-		if(!parent.isDirectory()){
+
+	protected List<SyncFileDescriptor> scanChild(File parent) {
+		if (!parent.isDirectory()) {
 			throw new IllegalStateException("not a directory");
 		}
-		
+
 		List<SyncFileDescriptor> childFiles = new LinkedList<SyncFileDescriptor>();
 		File[] files = parent.listFiles();
-		
-		for(File f : files ){
+
+		for (File f : files) {
 			SyncFileDescriptor fd = transformBasicDescription(f);
-			if(fd.isDirectory()){
-				((DirSyncFileDescriptor)fd).getChildFiles().addAll(scanChild(f));
+			if (fd.isDirectory()) {
+				((DirSyncFileDescriptor) fd).getChildFiles().addAll(scanChild(f));
 			}
 			childFiles.add(fd);
 		}
-		
+
 		return childFiles;
 	}
-	
-	private SyncFileDescriptor transformBasicDescription(File f){
+
+	private SyncFileDescriptor transformBasicDescription(File f) {
 		SyncFileDescriptor fd = null;
-		if(f.isDirectory()){
+		if (f.isDirectory()) {
 			fd = new DirSyncFileDescriptor();
-		}else{
+		} else {
 			fd = new FileSyncFileDescriptor();
 		}
 		fd.setFileName(f.getName());
 		fd.setDirectory(f.isDirectory());
-		fd.setFullPath(f.getAbsolutePath());
-		
+		fd.setFullPath(determineFullPath(f.getAbsolutePath()));
+
 		return fd;
+	}
+
+	private String determineFullPath(String absolutePath) {
+		String omitPart = rootDirPath.substring(rootDirPath.lastIndexOf("/")+1, rootDirPath.length());
+		LOG.debug("omitPart: "+ omitPart);
+		String leftPart = absolutePath.substring(absolutePath.indexOf(omitPart));
+		LOG.debug("leftPart: "+ leftPart);
+		return leftPart;
 	}
 
 }
