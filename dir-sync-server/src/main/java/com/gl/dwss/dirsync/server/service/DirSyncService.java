@@ -4,4 +4,5 @@ import com.gl.dwss.dirsync.pojo.SyncFileDescriptor;
 
 public interface DirSyncService {
 	SyncFileDescriptor scanRootDir();
+	String getRootDirPath();
 }

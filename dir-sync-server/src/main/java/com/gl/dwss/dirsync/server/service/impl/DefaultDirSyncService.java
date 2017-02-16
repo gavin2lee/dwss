@@ -71,4 +71,8 @@ public class DefaultDirSyncService implements DirSyncService {
 		return leftPart;
 	}
 
+	public String getRootDirPath() {
+		return rootDirPath;
+	}
+
 }

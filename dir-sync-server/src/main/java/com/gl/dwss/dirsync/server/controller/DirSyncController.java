@@ -38,10 +38,10 @@ public class DirSyncController {
 
 	@GetMapping(path = "/files/file")
 	public void downloadFile(@RequestParam("full-path") String fullPath, HttpServletResponse resp) {
-		if(LOG.isTraceEnabled()){
+		if (LOG.isTraceEnabled()) {
 			LOG.trace(String.format("download file:%s", fullPath));
 		}
-		File f = new File(fullPath);
+		File f = new File(combinePath(fullPath));
 		if (!f.exists()) {
 			throw new RuntimeException(String.format("%s does not exist", fullPath));
 		}
@@ -64,4 +64,8 @@ public class DirSyncController {
 		}
 	}
 
+	private String combinePath(String filePath) {
+		String rootPath = new File(dirSyncService.getRootDirPath()).getParent();
+		return rootPath + File.separator + filePath;
+	}
 }
