@@ -84,22 +84,32 @@ public class HttpFileSynchronizer implements FileSynchronizer {
 
 	protected void downloadFile(ClientSyncFileDescriptor f) throws ClientProtocolException, IOException {
 		CloseableHttpClient httpclient = HttpClients.custom().build();
+		CloseableHttpResponse resp = null;
 
-		String url = String.format("http://%s:%s/dir-sync/files/file?full-path=%s", host, port,
-				URLEncoder.encode(f.getFullPath(), "utf-8"));
-		HttpGet httpGet = new HttpGet(url);
-		CloseableHttpResponse resp = httpclient.execute(httpGet);
-		HttpEntity entity = resp.getEntity();
-		if (entity != null) {
-			File file = new File(combinePath(f.getFullPath()));
-			OutputStream out = null;
-			try {
-				out = new FileOutputStream(file);
-				IOUtils.copy(entity.getContent(), out);
-			} finally {
-				if (out != null) {
-					out.close();
+		try {
+			String url = String.format("http://%s:%s/dir-sync/files/file?full-path=%s", host, port,
+					URLEncoder.encode(f.getFullPath(), "utf-8"));
+			HttpGet httpGet = new HttpGet(url);
+			resp = httpclient.execute(httpGet);
+			HttpEntity entity = resp.getEntity();
+			if (entity != null) {
+				File file = new File(combinePath(f.getFullPath()));
+				OutputStream out = null;
+				try {
+					out = new FileOutputStream(file);
+					IOUtils.copy(entity.getContent(), out);
+				} finally {
+					if (out != null) {
+						out.close();
+					}
 				}
+			}
+		} finally {
+			if (resp != null) {
+				resp.close();
+			}
+			if (httpclient != null) {
+				httpclient.close();
 			}
 		}
 	}
