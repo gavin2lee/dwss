@@ -5,23 +5,35 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.gl.dwss.dirsync.pojo.DirSyncFileDescriptor;
 import com.gl.dwss.dirsync.pojo.FileSyncFileDescriptor;
 import com.gl.dwss.dirsync.pojo.SyncFileDescriptor;
+import com.gl.dwss.dirsync.server.config.DirSyncServerProperties;
 import com.gl.dwss.dirsync.server.service.DirSyncService;
 
 @Service
 public class DefaultDirSyncService implements DirSyncService {
 	private static final Logger LOG = LoggerFactory.getLogger(DefaultDirSyncService.class);
-	private String rootDirPath = "/home/gavin/Dev/Books";
+	private String rootDirPath;
+	
+	@Autowired
+	private DirSyncServerProperties dirSyncServerProperties;
+	
+	@PostConstruct
+	public void initProperties(){
+		rootDirPath = dirSyncServerProperties.getRootDirPath();
+	}
 
 	public SyncFileDescriptor scanRootDir() {
 		if (LOG.isTraceEnabled()) {
-			LOG.trace(String.format("scan root directory at %s", new Date().toString()));
+			LOG.trace(String.format("scan root directory %s at %s", rootDirPath, new Date().toString()));
 		}
 		File rootDir = new File(rootDirPath);
 		SyncFileDescriptor rootDirFd = transformBasicDescription(rootDir);

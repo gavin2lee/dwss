@@ -10,19 +10,19 @@ import org.springframework.web.client.RestTemplate;
 import com.gl.dwss.dirsync.client.service.FileSynchronizer;
 import com.gl.dwss.dirsync.client.service.impl.HttpFileSynchronizer;
 
-@SpringBootApplication(scanBasePackages={"com.gl.dirsync.client"})
-@EnableConfigurationProperties(DirSyncServerProperties.class)
+@SpringBootApplication(scanBasePackages = { "com.gl.dirsync.client" })
+@EnableConfigurationProperties({ DirSyncServerProperties.class })
 public class ClientConfig {
 	private static final Logger LOG = LoggerFactory.getLogger(ClientConfig.class);
-	
+
 	@Bean
-	public RestTemplate getRestTemplate(){
+	public RestTemplate getRestTemplate() {
 		LOG.debug("getRestTemplate");
 		return new RestTemplate();
 	}
 
 	@Bean
-	public FileSynchronizer getFileSynchronizer(){
+	public FileSynchronizer getFileSynchronizer() {
 		LOG.debug("getFileSynchronizer");
 		return new HttpFileSynchronizer();
 	}

@@ -1,4 +1,4 @@
-package com.gl.dwss.dirsync.client.config;
+package com.gl.dwss.dirsync.server.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
@@ -7,8 +7,7 @@ public class DirSyncServerProperties {
 	private String protocol = "http";
 	private String host = "localhost";
 	private int port = 10086;
-
-	private String clientRootDirPath = "/home/gavin/Dev/Tmp";
+	private String rootDirPath = "/home/gavin/Dev/Books";
 
 	public String getProtocol() {
 		return protocol;
@@ -34,12 +33,12 @@ public class DirSyncServerProperties {
 		this.port = port;
 	}
 
-	public String getClientRootDirPath() {
-		return clientRootDirPath;
+	public String getRootDirPath() {
+		return rootDirPath;
 	}
 
-	public void setClientRootDirPath(String clientRootDirPath) {
-		this.clientRootDirPath = clientRootDirPath;
+	public void setRootDirPath(String rootDirPath) {
+		this.rootDirPath = rootDirPath;
 	}
 
 }

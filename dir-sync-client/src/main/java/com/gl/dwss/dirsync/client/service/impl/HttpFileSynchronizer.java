@@ -30,7 +30,7 @@ public class HttpFileSynchronizer implements FileSynchronizer {
 	private static final Logger LOG = LoggerFactory.getLogger(HttpFileSynchronizer.class);
 	private String host;
 	private String port;
-	private String clientRootDirPath = "/home/gavin/Dev/Tmp";
+	private String clientRootDirPath;
 
 	@Autowired
 	private RestTemplate restTemplate;
@@ -58,6 +58,7 @@ public class HttpFileSynchronizer implements FileSynchronizer {
 	protected void initProperties() {
 		host = dirSyncServerProperties.getHost();
 		port = String.valueOf(dirSyncServerProperties.getPort());
+		clientRootDirPath = dirSyncServerProperties.getClientRootDirPath();
 		LOG.debug(String.format("remote server:host %s, port %s", host, port));
 	}
 
