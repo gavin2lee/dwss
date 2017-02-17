@@ -29,6 +29,7 @@ public class DefaultDirSyncService implements DirSyncService {
 	@PostConstruct
 	public void initProperties(){
 		rootDirPath = dirSyncServerProperties.getRootDirPath();
+		LOG.info(String.format("set root directory:%s", rootDirPath));
 	}
 
 	public SyncFileDescriptor scanRootDir() {
