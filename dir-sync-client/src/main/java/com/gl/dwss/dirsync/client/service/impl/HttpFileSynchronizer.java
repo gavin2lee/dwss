@@ -22,21 +22,26 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
+import com.gl.dwss.dirsync.client.config.DirSyncServerProperties;
 import com.gl.dwss.dirsync.client.service.FileSynchronizer;
 import com.gl.dwss.dirsync.objects.ClientSyncFileDescriptor;
 
 public class HttpFileSynchronizer implements FileSynchronizer {
 	private static final Logger LOG = LoggerFactory.getLogger(HttpFileSynchronizer.class);
-	private String host = "localhost";
-	private String port = "10086";
+	private String host;
+	private String port;
 	private String clientRootDirPath = "/home/gavin/Dev/Tmp";
 
 	@Autowired
 	private RestTemplate restTemplate;
 
+	@Autowired
+	private DirSyncServerProperties dirSyncServerProperties;
+
 	@PostConstruct
 	public void sync() throws Exception {
 		LOG.debug("sync start...");
+		initProperties();
 		String url = String.format("http://%s:%s/dir-sync/", host, port);
 		ResponseEntity<ClientSyncFileDescriptor> resp = restTemplate.getForEntity(url, ClientSyncFileDescriptor.class);
 		if (LOG.isTraceEnabled()) {
@@ -48,6 +53,12 @@ public class HttpFileSynchronizer implements FileSynchronizer {
 			return;
 		}
 		processRoot(remoteRoot);
+	}
+
+	protected void initProperties() {
+		host = dirSyncServerProperties.getHost();
+		port = String.valueOf(dirSyncServerProperties.getPort());
+		LOG.debug(String.format("remote server:host %s, port %s", host, port));
 	}
 
 	protected void processRoot(ClientSyncFileDescriptor root) throws ClientProtocolException, IOException {
