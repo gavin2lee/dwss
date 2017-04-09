@@ -26,8 +26,8 @@ public class DirSyncController {
 
 	@Autowired
 	private DirSyncService dirSyncService;
-
-	@GetMapping(path = "/")
+	
+	@GetMapping(path = "/files")
 	public SyncFileDescriptor listRootDir() {
 		if (LOG.isTraceEnabled()) {
 			LOG.trace(String.format("listRootDir at %s", new Date().toString()));

@@ -42,7 +42,7 @@ public class HttpFileSynchronizer implements FileSynchronizer {
 	public void sync() throws Exception {
 		LOG.debug("sync start...");
 		initProperties();
-		String url = String.format("http://%s:%s/dir-sync/", host, port);
+		String url = String.format("http://%s:%s/dir-sync/files", host, port);
 		ResponseEntity<ClientSyncFileDescriptor> resp = restTemplate.getForEntity(url, ClientSyncFileDescriptor.class);
 		if (LOG.isTraceEnabled()) {
 			LOG.trace(resp.getBody().toString());
