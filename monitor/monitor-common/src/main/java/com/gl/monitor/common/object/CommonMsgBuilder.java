@@ -13,7 +13,7 @@ public class CommonMsgBuilder {
 		return defMsg;
 	}
 	
-	public static CommonMsg buildMsg(CommonMsg inMsg){
+	public static CommonMsg buildMsg(MonitorReqMsg inMsg){
 		CommonMsg outMsg = buildDefMsg();
 		outMsg.getHeader().setTargetSysId(inMsg.getHeader().getSrcSysId());
 		
