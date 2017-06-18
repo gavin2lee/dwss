@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.gl.monitor.gather.service.ComputerInfoInternalSender;
 import com.gl.monitor.gather.vo.ComputerInfo;
 import com.gl.monitor.gather.worker.ComputerInfoGather;
 
@@ -11,6 +12,9 @@ public class SimpleComputerInfoGatherJob {
 	private static final Logger log = LoggerFactory.getLogger(SimpleComputerInfoGatherJob.class);
 	@Autowired
 	private ComputerInfoGather gather;
+	
+	@Autowired
+	private ComputerInfoInternalSender sender;
 
 	private int timeout;
 
@@ -27,5 +31,7 @@ public class SimpleComputerInfoGatherJob {
 		ComputerInfo info = gather.gather();
 
 		log.info(String.format("Data:%s", info));
+		
+		sender.send(info);
 	}
 }

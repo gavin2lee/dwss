@@ -18,6 +18,8 @@ import org.springframework.scheduling.quartz.SimpleTriggerFactoryBean;
 import com.gl.monitor.gather.job.ComputerInfoGatherJob;
 import com.gl.monitor.gather.job.ComputerInfoGatherJobFactory;
 import com.gl.monitor.gather.job.SimpleComputerInfoGatherJob;
+import com.gl.monitor.gather.service.ComputerInfoInternalSender;
+import com.gl.monitor.gather.worker.ComputerInfoSender;
 
 @Configuration
 @ComponentScan(basePackages = { "com.gl.monitor.gather" })
@@ -53,6 +55,20 @@ public class AppConfiguration {
 		
 		f.setJobDetail(jobDetail);
 		return f;
+	}
+	
+	@Bean
+	public ObjectHolder getObjectHolder(){
+		ObjectHolder holder = new ObjectHolder();
+		return holder;
+	}
+	
+	@Bean
+	public ComputerInfoInternalSender getComputerInfoInternalSender(){
+		ObjectHolder holder = getObjectHolder();
+		ComputerInfoInternalSender sender = new ComputerInfoInternalSender(holder.getInfoQueue());
+		
+		return sender;
 	}
 	
 	@Bean
@@ -112,5 +128,10 @@ public class AppConfiguration {
 		scheduler.setTriggers(getSimpleTrigger(), getCronTrigger());
 
 		return scheduler;
+	}
+	
+	@Bean
+	public ComputerInfoSender getComputerInfoSender(){
+		return new ComputerInfoSender();
 	}
 }
