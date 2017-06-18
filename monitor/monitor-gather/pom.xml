@@ -87,6 +87,12 @@
 			<artifactId>httpclient</artifactId>
 		</dependency>
 
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>fastjson</artifactId>
+			<version>1.2.33</version>
+		</dependency>
+
 		<!-- <dependency> <groupId>com.gl.monitor</groupId> <artifactId>monitor-common</artifactId> 
 			<version>1.0.0.0-SNAPSHOT</version> </dependency> <dependency> <groupId>org.springframework.boot</groupId> 
 			<artifactId>spring-boot-starter-web</artifactId> </dependency> <dependency> 

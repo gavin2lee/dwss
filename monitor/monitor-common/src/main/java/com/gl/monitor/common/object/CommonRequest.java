@@ -122,4 +122,17 @@ public class CommonRequest extends CommonMsgBody {
 		this.usedDisk = usedDisk;
 	}
 
+	@Override
+	public String toString() {
+		return "CommonRequest [getDeviceId()=" + getDeviceId() + ", getDeviceName()=" + getDeviceName()
+				+ ", getDeviceType()=" + getDeviceType() + ", getIpAddr()=" + getIpAddr() + ", getHostName()="
+				+ getHostName() + ", getOprDate()=" + getOprDate() + ", getOprTime()=" + getOprTime()
+				+ ", getTotalMemory()=" + getTotalMemory() + ", getUsedMemory()=" + getUsedMemory() + ", getCpuCores()="
+				+ getCpuCores() + ", getUsedCpuPercent()=" + getUsedCpuPercent() + ", getTotalDisk()=" + getTotalDisk()
+				+ ", getUsedDisk()=" + getUsedDisk() + ", getBizSeq()=" + getBizSeq() + ", getCreateOn()="
+				+ getCreateOn() + ", getCreateAt()=" + getCreateAt() + ", getUpdateOn()=" + getUpdateOn()
+				+ ", getUpdateAt()=" + getUpdateAt() + ", toString()=" + super.toString() + ", getClass()=" + getClass()
+				+ ", hashCode()=" + hashCode() + "]";
+	}
+
 }

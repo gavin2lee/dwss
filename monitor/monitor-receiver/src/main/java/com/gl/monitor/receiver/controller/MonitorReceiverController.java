@@ -23,15 +23,15 @@ public class MonitorReceiverController {
 	
 	@PostMapping(path = "/messages")
 	public CommonMsg receive(@RequestBody MonitorReqMsg reqMsg){
-		log.debug("receive:\n"+reqMsg);
+		log.info("receive:\n"+reqMsg.toString());
 		CommonMsg respMsg = msgHandler.handle(reqMsg);
-		log.debug("send:\n"+respMsg);
+		log.info("send:\n"+respMsg.toString());
 		return respMsg;
 	}
 	
 	@GetMapping(path="/messages")
 	public List<CommonMsg> list(){
-		log.debug(String.format("list", ""));
+		log.info(String.format("list", ""));
 		return msgHandler.list();
 	}
 	

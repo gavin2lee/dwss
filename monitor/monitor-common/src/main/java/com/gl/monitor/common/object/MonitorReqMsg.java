@@ -15,4 +15,10 @@ public class MonitorReqMsg {
 	public void setBody(CommonRequest body) {
 		this.body = body;
 	}
+	@Override
+	public String toString() {
+		return "MonitorReqMsg [header=" + header + ", body=" + body + "]";
+	}
+	
+	
 }
