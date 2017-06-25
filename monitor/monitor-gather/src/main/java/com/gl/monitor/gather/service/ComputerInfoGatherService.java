@@ -14,31 +14,34 @@ public class ComputerInfoGatherService {
 
 	public ComputerInfo gather() {
 		ComputerInfo info = new ComputerInfo();
-		
+
 		int cpuCores = Runtime.getRuntime().availableProcessors();
 		info.setCpuCores(cpuCores);
-		
+
 		long totalMemoryBytes = Runtime.getRuntime().totalMemory();
-		//Kilo Mega Giga Tera Peta Exa Bronto
+		// Kilo Mega Giga Tera Peta Exa Bronto
 		long totalMemoryKilo = totalMemoryBytes / 1000;
 		info.setTotalMemory(totalMemoryKilo);
-		
+
 		long freeMemoryBytes = Runtime.getRuntime().freeMemory();
 		long freeMemoryKilo = freeMemoryBytes / 1000;
 		long usedMemoryKilo = totalMemoryKilo - freeMemoryKilo;
-		info.setUsedMemory(usedMemoryKilo); 
-		
+		info.setUsedMemory(usedMemoryKilo);
+
 		File workDir = new File("./");
 		long totalDiskSpaceBytes = workDir.getTotalSpace();
 		long totalDiskSpaceMega = totalDiskSpaceBytes / 1000 / 1000;
 		info.setTotalDisk(totalDiskSpaceMega);
-		
+
 		long freeDiskSpaceBytes = workDir.getFreeSpace();
 		long freeDiskSpaceMega = freeDiskSpaceBytes / 1000 / 1000;
 		long usedDiskSpaceMega = totalDiskSpaceMega - freeDiskSpaceMega;
 		info.setUsedDisk(usedDiskSpaceMega);
-		
-		if(log.isDebugEnabled()){
+
+		info.setDeviceName(System.getProperty("os.name"));
+		info.setDeviceId(System.getProperty("os.name") + "-" + System.getProperty("os.version"));
+
+		if (log.isDebugEnabled()) {
 			log.debug(info.toString());
 		}
 		return info;
