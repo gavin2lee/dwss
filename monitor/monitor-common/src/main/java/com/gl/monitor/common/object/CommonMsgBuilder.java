@@ -1,5 +1,6 @@
 package com.gl.monitor.common.object;
 
+
 public class CommonMsgBuilder {
 	public static final String DEF_SYS_ID = "000000";
 	public static final String DEF_TO_SYS_ID = "000001";

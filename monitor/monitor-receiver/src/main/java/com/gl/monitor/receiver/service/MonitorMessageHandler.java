@@ -16,20 +16,22 @@ public class MonitorMessageHandler {
 	private static final Logger log = LoggerFactory.getLogger(MonitorMessageHandler.class);
 
 	public CommonMsg handle(MonitorReqMsg reqMsg) {
-		if(reqMsg == null){
+		log.info("MonitorReqMsg:" + reqMsg);
+		if (reqMsg == null) {
+
 			return CommonMsgBuilder.buildDefMsg();
 		}
 		log.debug("receive message header:" + reqMsg.getHeader());
 		log.debug("receive message body:" + reqMsg.getBody());
-		
+
 		CommonMsg respMsg = CommonMsgBuilder.buildMsg(reqMsg);
 		return respMsg;
 	}
-	
-	public List<CommonMsg> list(){
+
+	public List<CommonMsg> list() {
 		return Collections.emptyList();
 	}
-	
+
 	public CommonMsg getTemplate() {
 		CommonMsg respMsg = CommonMsgBuilder.buildReqMsgTemplate();
 		return respMsg;
