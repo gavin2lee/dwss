@@ -45,6 +45,8 @@ public class ComputerInfoSender {
 	private String remoteServerPort = "19009";
 	private String remoteServerContext = "monitor";
 	private String remoteServerPath = "messages";
+	
+	private String srcSystemId = System.getProperty("srcSysId", "client-00");
 
 	public ComputerInfoSender() {
 		String host = System.getProperty("remoteServerHost");
@@ -141,7 +143,8 @@ public class ComputerInfoSender {
 
 			MsgHeader header = new MsgHeader();
 			header.setMsgId(genMsgId(info));
-			header.setTargetSysId("888888");
+			header.setTargetSysId("server-10080");
+			header.setSrcSysId(srcSystemId);
 
 			msg.setHeader(header);
 
