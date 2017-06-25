@@ -14,6 +14,7 @@ import java.util.concurrent.BlockingQueue;
 
 import javax.annotation.PostConstruct;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -40,10 +41,34 @@ public class ComputerInfoSender {
 	private SharedObjectsHolder holder;
 	private BlockingQueue<ComputerInfo> infoQueue;
 
-	private String remoteServerUrl = "localhost";
+	private String remoteServerHost = "localhost";
 	private String remoteServerPort = "19009";
+	private String remoteServerContext = "monitor";
+	private String remoteServerPath = "messages";
 
 	public ComputerInfoSender() {
+		String host = System.getProperty("remoteServerHost");
+		if (StringUtils.isNotBlank(host)) {
+			remoteServerHost = host.trim();
+		}
+
+		String port = System.getProperty("remoteServerPort");
+		if (StringUtils.isNotBlank(port)) {
+			remoteServerPort = port.trim();
+		}
+
+		String context = System.getProperty("remoteServerContext");
+		if (StringUtils.isNotBlank(context)) {
+			remoteServerContext = context.trim();
+		}
+
+		String path = System.getProperty("remoteServerPath");
+		if (StringUtils.isNotBlank(path)) {
+			remoteServerPath = path.trim();
+		}
+
+		log.info(String.format("http://%s:%s/%s/%s", remoteServerHost, remoteServerPort, remoteServerContext,
+				remoteServerPath));
 	}
 
 	@PostConstruct
@@ -80,7 +105,8 @@ public class ComputerInfoSender {
 
 			log.info(String.format("SEND:%s", msgContent));
 
-			String strURL = String.format("http://%s:%s/monitor/messages", remoteServerUrl, remoteServerPort);
+			String strURL = String.format("http://%s:%s/%s/%s", remoteServerHost, remoteServerPort, remoteServerContext,
+					remoteServerPath);
 			HttpPost post = new HttpPost(strURL);
 
 			HttpEntity httpEntity = new StringEntity(msgContent, ContentType.APPLICATION_JSON);
@@ -106,9 +132,10 @@ public class ComputerInfoSender {
 			log.info(String.format("RECV:%s", bos.toString()));
 		}
 
-		protected String genMsgId(ComputerInfo info){
+		protected String genMsgId(ComputerInfo info) {
 			return UUID.randomUUID().toString();
 		}
+
 		protected Msg buildMsg(ComputerInfo info) {
 			Msg msg = new Msg();
 
@@ -142,26 +169,26 @@ public class ComputerInfoSender {
 		protected String calLocalIpAddress() throws SocketException {
 			Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
 			String localIpAddr = "";
-			System.out.println("interfaces:"+interfaces.hasMoreElements());
+			System.out.println("interfaces:" + interfaces.hasMoreElements());
 			while (interfaces.hasMoreElements()) {
 				NetworkInterface inter = interfaces.nextElement();
 				Enumeration<InetAddress> inets = inter.getInetAddresses();
 				while (inets.hasMoreElements()) {
 					InetAddress inet = inets.nextElement();
-					System.out.println("inet class:"+ inet.getClass().getName());
-					System.out.println("inet:"+inet.getHostAddress());
-					System.out.println("isSiteLocalAddress:"+inet.isSiteLocalAddress());
+					System.out.println("inet class:" + inet.getClass().getName());
+					System.out.println("inet:" + inet.getHostAddress());
+					System.out.println("isSiteLocalAddress:" + inet.isSiteLocalAddress());
 					System.out.println("isLoopbackAddress:" + inet.isLoopbackAddress());
-					System.out.println("isLinkLocalAddress:"+ inet.isLinkLocalAddress());
+					System.out.println("isLinkLocalAddress:" + inet.isLinkLocalAddress());
 					if (inet.isSiteLocalAddress() && !inet.isLoopbackAddress()
 							&& (inet.getHostAddress().indexOf(":") == -1)) {
 						localIpAddr = inet.getHostAddress();
-						System.out.println("localIpAddr:"+localIpAddr);
+						System.out.println("localIpAddr:" + localIpAddr);
 						break;
 					}
 				}
-				
-				if(localIpAddr != null && !"".equals(localIpAddr)){
+
+				if (localIpAddr != null && !"".equals(localIpAddr)) {
 					break;
 				}
 			}
