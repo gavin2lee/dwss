@@ -46,7 +46,7 @@ public class ComputerInfoSender {
 	private String remoteServerContext = "monitor";
 	private String remoteServerPath = "messages";
 	
-	private String srcSystemId = System.getProperty("srcSysId", "client-00");
+	private String srcSystemId = System.getProperty("sysId", "client-00");
 
 	public ComputerInfoSender() {
 		String host = System.getProperty("remoteServerHost");
