@@ -8,6 +8,12 @@ public class CommonMsgBuilder {
 	public static final String DEF_RET_CODE = "0000";
 	public static final String DEF_RET_MSG = "";
 	
+	private static final String SYS_ID;
+	
+	static{
+		SYS_ID = System.getProperty("sysId", DEF_SYS_ID);
+	}
+	
 	public static CommonMsg buildDefMsg(){
 		CommonMsg defMsg = new CommonMsg(buildDefHeader(), null);
 		return defMsg;
@@ -16,6 +22,7 @@ public class CommonMsgBuilder {
 	public static CommonMsg buildMsg(MonitorReqMsg inMsg){
 		CommonMsg outMsg = buildDefMsg();
 		outMsg.getHeader().setTargetSysId(inMsg.getHeader().getSrcSysId());
+		outMsg.getHeader().setSrcSysId(SYS_ID);
 		
 		return outMsg;
 	}
