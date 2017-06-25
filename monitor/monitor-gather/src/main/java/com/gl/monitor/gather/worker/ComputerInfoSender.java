@@ -9,6 +9,7 @@ import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.Date;
 import java.util.Enumeration;
+import java.util.UUID;
 import java.util.concurrent.BlockingQueue;
 
 import javax.annotation.PostConstruct;
@@ -26,7 +27,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.alibaba.fastjson.JSONObject;
-import com.gl.monitor.gather.config.ObjectHolder;
+import com.gl.monitor.gather.config.SharedObjectsHolder;
 import com.gl.monitor.gather.util.DateTimeUtils;
 import com.gl.monitor.gather.vo.ComputerInfo;
 import com.gl.monitor.gather.vo.Msg;
@@ -36,7 +37,7 @@ public class ComputerInfoSender {
 	private static final Logger log = LoggerFactory.getLogger(ComputerInfoSender.class);
 
 	@Autowired
-	private ObjectHolder holder;
+	private SharedObjectsHolder holder;
 	private BlockingQueue<ComputerInfo> infoQueue;
 
 	private String remoteServerUrl = "localhost";
@@ -105,11 +106,14 @@ public class ComputerInfoSender {
 			log.info(String.format("RECV:%s", bos.toString()));
 		}
 
+		protected String genMsgId(ComputerInfo info){
+			return UUID.randomUUID().toString();
+		}
 		protected Msg buildMsg(ComputerInfo info) {
 			Msg msg = new Msg();
 
 			MsgHeader header = new MsgHeader();
-			header.setMsgId(String.format("%s", System.nanoTime()));
+			header.setMsgId(genMsgId(info));
 			header.setTargetSysId("888888");
 
 			msg.setHeader(header);
@@ -149,7 +153,7 @@ public class ComputerInfoSender {
 					System.out.println("isSiteLocalAddress:"+inet.isSiteLocalAddress());
 					System.out.println("isLoopbackAddress:" + inet.isLoopbackAddress());
 					System.out.println("isLinkLocalAddress:"+ inet.isLinkLocalAddress());
-					if (!inet.isSiteLocalAddress() && !inet.isLoopbackAddress()
+					if (inet.isSiteLocalAddress() && !inet.isLoopbackAddress()
 							&& (inet.getHostAddress().indexOf(":") == -1)) {
 						localIpAddr = inet.getHostAddress();
 						System.out.println("localIpAddr:"+localIpAddr);

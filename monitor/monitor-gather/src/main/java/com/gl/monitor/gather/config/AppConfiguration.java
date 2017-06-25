@@ -58,14 +58,14 @@ public class AppConfiguration {
 	}
 	
 	@Bean
-	public ObjectHolder getObjectHolder(){
-		ObjectHolder holder = new ObjectHolder();
+	public SharedObjectsHolder getObjectHolder(){
+		SharedObjectsHolder holder = new SharedObjectsHolder();
 		return holder;
 	}
 	
 	@Bean
 	public ComputerInfoInternalSender getComputerInfoInternalSender(){
-		ObjectHolder holder = getObjectHolder();
+		SharedObjectsHolder holder = getObjectHolder();
 		ComputerInfoInternalSender sender = new ComputerInfoInternalSender(holder.getInfoQueue());
 		
 		return sender;
