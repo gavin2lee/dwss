@@ -9,11 +9,32 @@
 		<version>1.0.0.0-SNAPSHOT</version>
 	</parent>
 
-	<groupId>com.gl.order</groupId>
 	<artifactId>order-client</artifactId>
-	<version>1.0.0.0-SNAPSHOT</version>
 
 	<name>Order Client</name>
 	<packaging>jar</packaging>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>2.6</version>
+				<configuration>
+					<encoding>UTF-8</encoding>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.3</version>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+					<encoding>UTF-8</encoding>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 
 </project>

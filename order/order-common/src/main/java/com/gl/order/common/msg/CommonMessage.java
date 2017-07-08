@@ -7,9 +7,5 @@ public interface CommonMessage {
 	 */
 	String getMessageId();
 	
-	/*
-	 * 
-	 * original systemId(2digits)+YYYYMMDD(8digits)+timestamp
-	 */
-	String getBizId();
+
 }

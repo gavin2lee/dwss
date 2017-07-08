@@ -12,4 +12,14 @@ public interface CommonResponse extends CommonMessage{
 	 */
 	String getResponseTime();
 	
+	/*
+	 * 4digits,i.e,0000,1000
+	 */
+	String getRetCode();
+	
+	
+	/*
+	 * message prompt returned
+	 */
+	String getRetMsg();
 }
