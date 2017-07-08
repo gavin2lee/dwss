@@ -13,6 +13,14 @@
 
 	<name>Order Client</name>
 	<packaging>jar</packaging>
+	
+	<dependencies>
+	   <dependency>
+	       <groupId>com.gl.order</groupId>
+	       <artifactId>order-common</artifactId>
+	       <version>${project.parent.version}</version>
+	   </dependency>
+	</dependencies>
 
 	<build>
 		<plugins>
