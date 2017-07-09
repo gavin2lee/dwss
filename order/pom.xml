@@ -14,6 +14,7 @@
 		<module>./order-common</module>
 		<module>./order-frontend</module>
 		<module>./order-client</module>
+		<module>./order-client-batch</module>
 	</modules>
 
 </project>
