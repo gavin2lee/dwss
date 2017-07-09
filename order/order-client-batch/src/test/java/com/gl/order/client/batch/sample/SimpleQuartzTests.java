@@ -4,7 +4,6 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.quartz.JobBuilder;
 import org.quartz.JobDetail;
-import org.quartz.ScheduleBuilder;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.SimpleScheduleBuilder;
