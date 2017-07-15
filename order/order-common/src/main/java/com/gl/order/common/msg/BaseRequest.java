@@ -1,6 +1,10 @@
 package com.gl.order.common.msg;
 
 public abstract class BaseRequest implements CommonRequest {
+	/*
+	 * 
+	 * systemId(2digits)+YYYYMMDD(8digits)+timestamp
+	 */
 	protected String messageId;
 	protected String clientId;
 	protected String requestTime;

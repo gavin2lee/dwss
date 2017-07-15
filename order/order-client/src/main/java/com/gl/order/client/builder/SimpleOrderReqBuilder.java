@@ -4,6 +4,10 @@ import com.gl.order.client.msg.SimpleOrderReq;
 import com.gl.order.client.pojo.SimpleOrder;
 
 public class SimpleOrderReqBuilder {
+	/*
+	 * 
+	 * systemId(2digits)+YYYYMMDD(8digits)+timestamp
+	 */
 	private String messageId;
 	private String clientId;
 	private String requestTime;

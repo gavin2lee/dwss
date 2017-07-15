@@ -1,9 +1,16 @@
 package com.gl.order.client.pojo;
 
 public class SimpleOrder {
+	/*
+	 * YYYYMMDD(8digits)+timestamp
+	 */
 	protected String orderId;
 	protected String createTime;
 	protected String updateTime;
+	/*
+	 * 
+	 * original systemId(2digits)+YYYYMMDD(8digits)+timestamp
+	 */
 	protected String bizId;
 	private int orderType;
 	private String status;

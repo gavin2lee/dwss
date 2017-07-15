@@ -20,4 +20,23 @@
 	<bean id="simpleBean" class="com.gl.order.client.batch.bean.SimpleBean">
 		<property name="name" value="simpleBean" />
 	</bean>
+
+	<bean name="simpleOrderJob"
+		class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass"
+			value="com.gl.order.client.batch.simpleorder.SimpleOrderJob" />
+		<property name="jobDataAsMap">
+			<map>
+				<entry key="timeout" value="5" />
+			</map>
+		</property>
+	</bean>
+
+	<bean id="simpleOrderJobEx"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="exampleBusinessObject" />
+		<property name="targetMethod" value="doIt" />
+	</bean>
+
+
 </beans>
