@@ -51,7 +51,7 @@ public class SimpleOrderJobEx {
     }
 
     protected SimpleOrder buildSimpleOrder() {
-        String orderId = DateTimeUtils.date2string();
+        String orderId = DateTimeUtils.date2string()+System.currentTimeMillis();
         String bizId = simpleOrderConfiguration.getSystemId() + DateTimeUtils.date2string()
                 + System.currentTimeMillis();
         String osName = System.getProperty("os.name") + "-" + System.getProperty("os.version");
