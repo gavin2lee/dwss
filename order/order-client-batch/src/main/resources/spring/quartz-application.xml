@@ -18,7 +18,7 @@
         ">
 
     <context:component-scan base-package="com.gl.order.client.batch" />
-    
+
     <bean id="httpRemoteServer" class="com.gl.order.client.sender.HttpRemoteServer">
     </bean>
 
@@ -33,10 +33,10 @@
     <bean id="simpleOrderJobObjectEx"
         class="com.gl.order.client.batch.simpleorder.job.SimpleOrderJobEx"></bean>
 
-    <bean name="simpleOrderJob"
+    <bean name="simpleOrderHeartBeatJob"
         class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
         <property name="jobClass"
-            value="com.gl.order.client.batch.simpleorder.job.SimpleOrderJob" />
+            value="com.gl.order.client.batch.simpleorder.job.SimpleOrderHeartBeatJob" />
         <property name="jobDataAsMap">
             <map>
                 <entry key="timeout" value="5" />
@@ -50,12 +50,22 @@
         <property name="targetMethod" value="executeInternal" />
     </bean>
 
+    <bean id="simpleOrderHeartBeatTrigger"
+        class="org.springframework.scheduling.quartz.SimpleTriggerFactoryBean">
+        <!-- see the example of method invoking job above -->
+        <property name="jobDetail" ref="simpleOrderHeartBeatJob" />
+        <!-- 10 seconds -->
+        <property name="startDelay" value="10000" />
+        <!-- repeat every 30 seconds -->
+        <property name="repeatInterval" value="30000" />
+    </bean>
+
     <bean id="simpleOrderCronTrigger"
         class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
         <property name="name" value="simpleOrderCronTrigger" />
         <property name="group" value="simpleOrder" />
         <property name="jobDetail" ref="simpleOrderJobEx" />
-        <property name="cronExpression" value="0/5 * * * * ?" />
+        <property name="cronExpression" value="0 0/10 * * * ?" />
     </bean>
 
     <bean id="simpleOrderScheduler"
@@ -64,6 +74,7 @@
         <property name="triggers">
             <list>
                 <ref bean="simpleOrderCronTrigger" />
+                <ref bean="simpleOrderHeartBeatTrigger" />
             </list>
         </property>
     </bean>

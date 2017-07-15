@@ -7,15 +7,15 @@ import com.gl.order.frontend.config.SysConfiguration;
 
 @Component
 public class MessageInfoGenerator {
-	private String systemId = SysConfiguration.SYSTEM_ID;
+    private String systemId = SysConfiguration.SYSTEM_ID;
 
-	public String generateMsgId() {
-		StringBuilder msgId = new StringBuilder();
-		msgId.append(systemId).append(DateTimeUtils.date2string()).append(System.currentTimeMillis());
-		return msgId.toString();
-	}
+    public String generateMsgId() {
+        StringBuilder msgId = new StringBuilder();
+        msgId.append(systemId).append(DateTimeUtils.date2string()).append(System.currentTimeMillis());
+        return msgId.toString();
+    }
 
-	public String generateRespTime() {
-		return DateTimeUtils.datetime2string();
-	}
+    public String generateRespTime() {
+        return DateTimeUtils.datetime2string();
+    }
 }

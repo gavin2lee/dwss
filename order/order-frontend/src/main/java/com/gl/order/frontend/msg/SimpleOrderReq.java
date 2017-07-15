@@ -17,7 +17,7 @@ public class SimpleOrderReq extends BaseRequest {
     @Override
     public String toString() {
         return "SimpleOrderReq [order=" + order + ", messageId=" + messageId + ", clientId=" + clientId
-                + ", requestTime=" + requestTime + "]";
+                + ", requestTime=" + requestTime + ", messageType=" + messageType + "]";
     }
 
 }

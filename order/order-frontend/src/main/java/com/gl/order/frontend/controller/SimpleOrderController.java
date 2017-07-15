@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.gl.order.common.dict.MessageType;
 import com.gl.order.frontend.exception.OrderException;
 import com.gl.order.frontend.helper.SimpleOrderControllerHelper;
 import com.gl.order.frontend.msg.SimpleOrderReq;
@@ -25,10 +26,23 @@ public class SimpleOrderController {
     private SimpleOrderControllerHelper helper;
 
     @PostMapping(path = "/simpleorders")
-    public SimpleOrderResp order(@RequestBody SimpleOrderReq req) {
+    public SimpleOrderResp createOrder(@RequestBody SimpleOrderReq req) {
         log.info(String.format("<<< Server RECV:%s", req));
         SimpleOrderResp resp = null;
+        
+        if(req.getMessageType() == MessageType.HeartBeatReq.ordinal()){
+            resp = processHeartBeatOrder(req);
+        }else{
+            resp = processCreateOrder(req);
+        }
+
+        log.info(String.format(">>> Server SEND:%s", resp));
+        return resp;
+    }
+
+    protected SimpleOrderResp processCreateOrder(SimpleOrderReq req) {
         SimpleOrder orderReq = req.getOrder();
+        SimpleOrderResp resp = null;
         try {
             SimpleOrder orderRet = simpleOrderService.order(orderReq);
             resp = helper.buildResp(orderRet);
@@ -37,8 +51,12 @@ public class SimpleOrderController {
             resp = helper.buildAbnormalResp(orderReq, e);
         }
 
-        log.info(String.format(">>> Server SEND:%s", resp));
         return resp;
     }
 
+    protected SimpleOrderResp processHeartBeatOrder(SimpleOrderReq req) {
+        SimpleOrderResp resp = helper.buildHeartBeatResp(req);
+
+        return resp;
+    }
 }

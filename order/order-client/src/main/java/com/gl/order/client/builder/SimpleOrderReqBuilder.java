@@ -4,47 +4,56 @@ import com.gl.order.client.msg.SimpleOrderReq;
 import com.gl.order.client.pojo.SimpleOrder;
 
 public class SimpleOrderReqBuilder {
-	/*
-	 * 
-	 * systemId(2digits)+YYYYMMDD(8digits)+timestamp
-	 */
-	private String messageId;
-	private String clientId;
-	private String requestTime;
-	private SimpleOrder order;
+    /*
+     * 
+     * systemId(2digits)+YYYYMMDD(8digits)+timestamp
+     */
+    private String messageId;
+    private String clientId;
+    private String requestTime;
+    private SimpleOrder order;
 
-	public SimpleOrderReqBuilder(String messageId) {
-		this.messageId = messageId;
-	}
+    private int messageType;
 
-	public SimpleOrderReqBuilder withMessageId(String messageId) {
-		this.messageId = messageId;
-		return this;
-	}
+    public SimpleOrderReqBuilder(String messageId) {
+        this.messageId = messageId;
+    }
 
-	public SimpleOrderReqBuilder withClientId(String clientId) {
-		this.clientId = clientId;
-		return this;
-	}
+    public SimpleOrderReqBuilder withMessageId(String messageId) {
+        this.messageId = messageId;
+        return this;
+    }
 
-	public SimpleOrderReqBuilder withRequestTime(String requestTime) {
-		this.requestTime = requestTime;
-		return this;
-	}
+    public SimpleOrderReqBuilder withClientId(String clientId) {
+        this.clientId = clientId;
+        return this;
+    }
 
-	public SimpleOrderReqBuilder withOrder(SimpleOrder order) {
-		this.order = order;
-		return this;
-	}
+    public SimpleOrderReqBuilder withRequestTime(String requestTime) {
+        this.requestTime = requestTime;
+        return this;
+    }
 
-	public SimpleOrderReq build() {
-		SimpleOrderReq req = new SimpleOrderReq();
+    public SimpleOrderReqBuilder withMessageType(int messageType) {
+        this.messageType = messageType;
+        return this;
+    }
 
-		req.setClientId(clientId);
-		req.setMessageId(messageId);
-		req.setOrder(order);
-		req.setRequestTime(requestTime);
+    public SimpleOrderReqBuilder withOrder(SimpleOrder order) {
+        this.order = order;
+        return this;
+    }
 
-		return req;
-	}
+    public SimpleOrderReq build() {
+        SimpleOrderReq req = new SimpleOrderReq();
+
+        req.setClientId(clientId);
+        req.setMessageId(messageId);
+        req.setOrder(order);
+        req.setRequestTime(requestTime);
+
+        req.setMessageType(messageType);
+
+        return req;
+    }
 }

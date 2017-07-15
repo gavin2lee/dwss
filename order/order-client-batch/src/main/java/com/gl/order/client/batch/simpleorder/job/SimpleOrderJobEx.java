@@ -12,6 +12,9 @@ import com.gl.order.client.exception.ClientException;
 import com.gl.order.client.msg.SimpleOrderReq;
 import com.gl.order.client.pojo.SimpleOrder;
 import com.gl.order.client.sender.SimpleOrderSender;
+import com.gl.order.common.dict.MessageType;
+import com.gl.order.common.dict.OrderStatus;
+import com.gl.order.common.dict.OrderType;
 import com.gl.order.common.msg.CommonResponse;
 import com.gl.order.common.util.DateTimeUtils;
 
@@ -44,6 +47,7 @@ public class SimpleOrderJobEx {
         SimpleOrderReqBuilder b = new SimpleOrderReqBuilder(messageId);
         b.withClientId(simpleOrderConfiguration.getClientId()).withRequestTime(DateTimeUtils.datetime2string());
 
+        b.withMessageType(MessageType.NormalReq.ordinal());
         SimpleOrder order = buildSimpleOrder();
         b.withOrder(order);
 
@@ -57,8 +61,10 @@ public class SimpleOrderJobEx {
         String osName = System.getProperty("os.name") + "-" + System.getProperty("os.version");
         SimpleOrderBuilder b = new SimpleOrderBuilder(orderId);
         b.withBizId(bizId);
+        b.withOrderType(OrderType.NORMAL.ordinal());
         b.withCreateTime(DateTimeUtils.datetime2string());
         b.withProductName(osName);
+        b.withStatus(OrderStatus.Normal.name());
 
         return b.build();
     }

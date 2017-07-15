@@ -9,11 +9,11 @@ import com.gl.order.frontend.pojo.SimpleOrder;
 
 @Service
 public class SimpleOrderService {
-	private static final Logger log = LoggerFactory.getLogger(SimpleOrderService.class);
+    private static final Logger log = LoggerFactory.getLogger(SimpleOrderService.class);
 
-	public SimpleOrder order(SimpleOrder order) throws OrderException{
-		log.info(String.format("%s", order));
-		
-		return null;
-	}
+    public SimpleOrder order(SimpleOrder order) throws OrderException {
+        log.info(String.format("%s", order));
+
+        return null;
+    }
 }
