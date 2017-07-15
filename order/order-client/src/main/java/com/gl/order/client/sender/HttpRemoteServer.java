@@ -20,66 +20,66 @@ import com.gl.order.client.config.HttpServerConfiguration;
 import com.gl.order.client.exception.ClientException;
 
 public class HttpRemoteServer {
-	private HttpServerConfiguration httpServerConfiguration;
-	
-	
-	public HttpRemoteServer() {
-		super();
-	}
+    private HttpServerConfiguration httpServerConfiguration;
 
-	public HttpRemoteServer(HttpServerConfiguration httpServerConfiguration) {
-		super();
-		this.httpServerConfiguration = httpServerConfiguration;
-	}
+    public HttpRemoteServer() {
+        super();
+        httpServerConfiguration = new HttpServerConfiguration();
+    }
 
-	public String post(String body, String context) throws ClientException {
-		CloseableHttpClient client = HttpClients.createDefault();
+    public HttpRemoteServer(HttpServerConfiguration httpServerConfiguration) {
+        super();
+        this.httpServerConfiguration = httpServerConfiguration;
+    }
 
-		HttpHost httpHost = new HttpHost(httpServerConfiguration.getRemoteHost(),
-				Integer.parseInt(httpServerConfiguration.getRemotePort()), httpServerConfiguration.getSchema());
-		HttpPost httpPost = new HttpPost(tidyContextPath(context));
+    public String post(String body, String context) throws ClientException {
+        CloseableHttpClient client = HttpClients.createDefault();
 
-		try {
-			HttpEntity httpEntity = new StringEntity(body, ContentType.APPLICATION_JSON);
-			httpPost.setEntity(httpEntity);
-			HttpResponse resp = client.execute(httpHost,httpPost);
-			
-			StatusLine statusLine = resp.getStatusLine();
-			if(HttpStatus.SC_OK != statusLine.getStatusCode()){
-				throw new ClientException(statusLine.getReasonPhrase());
-			}
-			
-			HttpEntity respEntity = resp.getEntity();
-			InputStream content = respEntity.getContent();
+        HttpHost httpHost = new HttpHost(httpServerConfiguration.getRemoteHost(),
+                Integer.parseInt(httpServerConfiguration.getRemotePort()), httpServerConfiguration.getSchema());
+        HttpPost httpPost = new HttpPost(tidyContextPath(context));
 
-			byte[] buf = new byte[1024];
-			ByteArrayOutputStream bos = new ByteArrayOutputStream();
-			int len = 0;
-			while ((len = content.read(buf)) != -1) {
-				bos.write(buf, 0, len);
-			}
+        try {
+            HttpEntity httpEntity = new StringEntity(body, ContentType.APPLICATION_JSON);
+            httpPost.setEntity(httpEntity);
+            HttpResponse resp = client.execute(httpHost, httpPost);
 
-			content.close();
-			
-			return bos.toString();
-		} catch (ClientProtocolException e) {
-			throw new ClientException(e);
-		} catch (IOException e) {
-			throw new ClientException(e);
-		} finally {
-			try {
-				client.close();
-			} catch (IOException e) {
-				throw new ClientException(e);
-			}
-		}
-	}
-	
-	public void setHttpServerConfiguration(HttpServerConfiguration httpServerConfiguration) {
-		this.httpServerConfiguration = httpServerConfiguration;
-	}
+            StatusLine statusLine = resp.getStatusLine();
+            if (HttpStatus.SC_OK != statusLine.getStatusCode()) {
+                throw new ClientException(statusLine.getReasonPhrase());
+            }
 
-	private String tidyContextPath(String context) {
-		return context;
-	}
+            HttpEntity respEntity = resp.getEntity();
+            InputStream content = respEntity.getContent();
+
+            byte[] buf = new byte[1024];
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            int len = 0;
+            while ((len = content.read(buf)) != -1) {
+                bos.write(buf, 0, len);
+            }
+
+            content.close();
+
+            return bos.toString();
+        } catch (ClientProtocolException e) {
+            throw new ClientException(e);
+        } catch (IOException e) {
+            throw new ClientException(e);
+        } finally {
+            try {
+                client.close();
+            } catch (IOException e) {
+                throw new ClientException(e);
+            }
+        }
+    }
+
+    public void setHttpServerConfiguration(HttpServerConfiguration httpServerConfiguration) {
+        this.httpServerConfiguration = httpServerConfiguration;
+    }
+
+    private String tidyContextPath(String context) {
+        return context;
+    }
 }

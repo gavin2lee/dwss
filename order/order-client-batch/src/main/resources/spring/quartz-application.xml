@@ -1,42 +1,71 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context" 
-	xmlns:dubbo="http://code.alibabatech.com/schema/dubbo" xmlns:mvc="http://www.springframework.org/schema/mvc" 
-	xmlns:util="http://www.springframework.org/schema/util" xmlns:aop="http://www.springframework.org/schema/aop" 
-	xsi:schemaLocation="http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd 
-	http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd 
-	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd 
-	http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd 
-	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd 
-	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd 
-	http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd"> -->
+    xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context" 
+    xmlns:dubbo="http://code.alibabatech.com/schema/dubbo" xmlns:mvc="http://www.springframework.org/schema/mvc" 
+    xmlns:util="http://www.springframework.org/schema/util" xmlns:aop="http://www.springframework.org/schema/aop" 
+    xsi:schemaLocation="http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd 
+    http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd 
+    http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd 
+    http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd 
+    http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd 
+    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd 
+    http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd"> -->
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
-	xsi:schemaLocation="http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
-		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
-		">
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+        ">
 
-	<bean id="simpleBean" class="com.gl.order.client.batch.bean.SimpleBean">
-		<property name="name" value="simpleBean" />
-	</bean>
+    <context:component-scan base-package="com.gl.order.client.batch" />
+    
+    <bean id="httpRemoteServer" class="com.gl.order.client.sender.HttpRemoteServer">
+    </bean>
 
-	<bean name="simpleOrderJob"
-		class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
-		<property name="jobClass"
-			value="com.gl.order.client.batch.simpleorder.SimpleOrderJob" />
-		<property name="jobDataAsMap">
-			<map>
-				<entry key="timeout" value="5" />
-			</map>
-		</property>
-	</bean>
+    <bean id="simpleOrderSender" class="com.gl.order.client.sender.SimpleOrderSender">
+        <property name="httpRemoteServer" ref="httpRemoteServer" />
+    </bean>
 
-	<bean id="simpleOrderJobEx"
-		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
-		<property name="targetObject" ref="exampleBusinessObject" />
-		<property name="targetMethod" value="doIt" />
-	</bean>
+    <bean id="simpleBean" class="com.gl.order.client.batch.bean.SimpleBean">
+        <property name="name" value="simpleBean" />
+    </bean>
 
+    <bean id="simpleOrderJobObjectEx"
+        class="com.gl.order.client.batch.simpleorder.job.SimpleOrderJobEx"></bean>
+
+    <bean name="simpleOrderJob"
+        class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+        <property name="jobClass"
+            value="com.gl.order.client.batch.simpleorder.job.SimpleOrderJob" />
+        <property name="jobDataAsMap">
+            <map>
+                <entry key="timeout" value="5" />
+            </map>
+        </property>
+    </bean>
+
+    <bean id="simpleOrderJobEx"
+        class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="simpleOrderJobObjectEx" />
+        <property name="targetMethod" value="executeInternal" />
+    </bean>
+
+    <bean id="simpleOrderCronTrigger"
+        class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="name" value="simpleOrderCronTrigger" />
+        <property name="group" value="simpleOrder" />
+        <property name="jobDetail" ref="simpleOrderJobEx" />
+        <property name="cronExpression" value="0 * * * * ?" />
+    </bean>
+
+    <bean id="simpleOrderScheduler"
+        class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="schedulerName" value="simpleOrderScheduler" />
+        <property name="triggers">
+            <list>
+                <ref bean="simpleOrderCronTrigger" />
+            </list>
+        </property>
+    </bean>
 
 </beans>
