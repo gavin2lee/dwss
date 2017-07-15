@@ -45,7 +45,7 @@ public class ComputerInfoSender {
 	private String remoteServerPort = "19009";
 	private String remoteServerContext = "monitor";
 	private String remoteServerPath = "messages";
-	
+
 	private String srcSystemId = System.getProperty("sysId", "client-00");
 
 	public ComputerInfoSender() {

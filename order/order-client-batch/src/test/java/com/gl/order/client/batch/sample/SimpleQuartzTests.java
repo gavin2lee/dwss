@@ -1,6 +1,7 @@
 package com.gl.order.client.batch.sample;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.quartz.JobBuilder;
 import org.quartz.JobDetail;
@@ -15,6 +16,7 @@ import com.gl.order.client.batch.job.SimpleJob;
 import com.gl.order.client.batch.job.SimpleJobListener;
 import com.gl.order.client.batch.job.SimpleTriggerListener;
 
+@Ignore
 public class SimpleQuartzTests {
 
     @Test
