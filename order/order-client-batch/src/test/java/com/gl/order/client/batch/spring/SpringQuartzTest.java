@@ -1,6 +1,8 @@
 package com.gl.order.client.batch.spring;
 
 
+import java.io.IOException;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,5 +23,11 @@ public class SpringQuartzTest {
     @Test
     public void test() {
         log.info("test start");
+        
+        try {
+            System.in.read();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

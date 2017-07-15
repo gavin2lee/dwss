@@ -55,7 +55,7 @@
         <property name="name" value="simpleOrderCronTrigger" />
         <property name="group" value="simpleOrder" />
         <property name="jobDetail" ref="simpleOrderJobEx" />
-        <property name="cronExpression" value="0 * * * * ?" />
+        <property name="cronExpression" value="0/5 * * * * ?" />
     </bean>
 
     <bean id="simpleOrderScheduler"

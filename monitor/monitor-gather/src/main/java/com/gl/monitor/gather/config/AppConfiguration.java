@@ -25,113 +25,112 @@ import com.gl.monitor.gather.worker.ComputerInfoSender;
 @ComponentScan(basePackages = { "com.gl.monitor.gather" })
 public class AppConfiguration {
 
-	@Bean
-	public JobDetailFactoryBean getJobDetailFactoryBean() {
-		JobDetailFactoryBean factoryBean = new JobDetailFactoryBean();
-		factoryBean.setJobClass(ComputerInfoGatherJob.class);
-		Map<String, Object> jobDataAsMap = new HashMap<String, Object>();
-		jobDataAsMap.put("timeout", 10);
+    @Bean
+    public JobDetailFactoryBean getJobDetailFactoryBean() {
+        JobDetailFactoryBean factoryBean = new JobDetailFactoryBean();
+        factoryBean.setJobClass(ComputerInfoGatherJob.class);
+        Map<String, Object> jobDataAsMap = new HashMap<String, Object>();
+        jobDataAsMap.put("timeout", 10);
 
-		return factoryBean;
-	}
+        return factoryBean;
+    }
 
-	@Bean
-	public JobDetail getJobDetail() {
-		return getJobDetailFactoryBean().getObject();
-	}
-	
-	@Bean
-	public ComputerInfoGatherJob getComputerInfoGatherJob(){
-		ComputerInfoGatherJob job = new ComputerInfoGatherJob();
-		job.setTimeout(10);
-		return job;
-	}
-	
-	@Bean
-	public ComputerInfoGatherJobFactory getComputerInfoGatherJobFactory(){
-		ComputerInfoGatherJobFactory f = new ComputerInfoGatherJobFactory();
-		ComputerInfoGatherJob jobDetail = getComputerInfoGatherJob();
-		jobDetail.setGather(f.getGather());
-		
-		f.setJobDetail(jobDetail);
-		return f;
-	}
-	
-	@Bean
-	public SharedObjectsHolder getObjectHolder(){
-		SharedObjectsHolder holder = new SharedObjectsHolder();
-		return holder;
-	}
-	
-	@Bean
-	public ComputerInfoInternalSender getComputerInfoInternalSender(){
-		SharedObjectsHolder holder = getObjectHolder();
-		ComputerInfoInternalSender sender = new ComputerInfoInternalSender(holder.getInfoQueue());
-		
-		return sender;
-	}
-	
-	@Bean
-	public SimpleComputerInfoGatherJob getSimpleComputerInfoGatherJob(){
-		SimpleComputerInfoGatherJob job = new SimpleComputerInfoGatherJob();
-		job.setTimeout(100);
-		
-		return job;
-	}
-	
-	@Bean
-	public MethodInvokingJobDetailFactoryBean getMethodInvokingJobDetailFactoryBean(){
-		MethodInvokingJobDetailFactoryBean fb = new MethodInvokingJobDetailFactoryBean();
-		fb.setTargetObject(getSimpleComputerInfoGatherJob());
-		fb.setTargetMethod("execute");
-		
-		return fb;
-	}
-	
-	@Bean
-	public JobDetail getJobDetailFromMethod(){
-		return getMethodInvokingJobDetailFactoryBean().getObject();
-	}
+    @Bean
+    public JobDetail getJobDetail() {
+        return getJobDetailFactoryBean().getObject();
+    }
 
-	@Bean
-	public SimpleTriggerFactoryBean getSimpleTriggerFactoryBean() {
-		SimpleTriggerFactoryBean trigger = new SimpleTriggerFactoryBean();
-		trigger.setJobDetail(getJobDetailFromMethod());
-		trigger.setStartDelay(1000);
-		trigger.setRepeatInterval(5000);
-		return trigger;
-	}
-	
+    @Bean
+    public ComputerInfoGatherJob getComputerInfoGatherJob() {
+        ComputerInfoGatherJob job = new ComputerInfoGatherJob();
+        job.setTimeout(10);
+        return job;
+    }
 
-	@Bean
-	public CronTriggerFactoryBean getCronTriggerFactoryBean() {
-		CronTriggerFactoryBean trigger = new CronTriggerFactoryBean();
-		trigger.setJobDetail(getJobDetailFromMethod());
-		trigger.setCronExpression("0 0 6 * * ?");
+    @Bean
+    public ComputerInfoGatherJobFactory getComputerInfoGatherJobFactory() {
+        ComputerInfoGatherJobFactory f = new ComputerInfoGatherJobFactory();
+        ComputerInfoGatherJob jobDetail = getComputerInfoGatherJob();
+        jobDetail.setGather(f.getGather());
 
-		return trigger;
-	}
-	
-	@Bean
-	public SimpleTrigger getSimpleTrigger(){
-		return getSimpleTriggerFactoryBean().getObject();
-	}
-	
-	@Bean
-	public CronTrigger getCronTrigger(){
-		return getCronTriggerFactoryBean().getObject();
-	}
+        f.setJobDetail(jobDetail);
+        return f;
+    }
 
-	@Bean
-	public SchedulerFactoryBean getSchedulerFactoryBean() {
-		SchedulerFactoryBean scheduler = new SchedulerFactoryBean();
-		scheduler.setTriggers(getSimpleTrigger(), getCronTrigger());
+    @Bean
+    public SharedObjectsHolder getObjectHolder() {
+        SharedObjectsHolder holder = new SharedObjectsHolder();
+        return holder;
+    }
 
-		return scheduler;
-	}
-	
-	@Bean
-	public ComputerInfoSender getComputerInfoSender(){
-		return new ComputerInfoSender();
-	}
+    @Bean
+    public ComputerInfoInternalSender getComputerInfoInternalSender() {
+        SharedObjectsHolder holder = getObjectHolder();
+        ComputerInfoInternalSender sender = new ComputerInfoInternalSender(holder.getInfoQueue());
+
+        return sender;
+    }
+
+    @Bean
+    public SimpleComputerInfoGatherJob getSimpleComputerInfoGatherJob() {
+        SimpleComputerInfoGatherJob job = new SimpleComputerInfoGatherJob();
+        job.setTimeout(100);
+
+        return job;
+    }
+
+    @Bean
+    public MethodInvokingJobDetailFactoryBean getMethodInvokingJobDetailFactoryBean() {
+        MethodInvokingJobDetailFactoryBean fb = new MethodInvokingJobDetailFactoryBean();
+        fb.setTargetObject(getSimpleComputerInfoGatherJob());
+        fb.setTargetMethod("execute");
+
+        return fb;
+    }
+
+    @Bean
+    public JobDetail getJobDetailFromMethod() {
+        return getMethodInvokingJobDetailFactoryBean().getObject();
+    }
+
+    @Bean
+    public SimpleTriggerFactoryBean getSimpleTriggerFactoryBean() {
+        SimpleTriggerFactoryBean trigger = new SimpleTriggerFactoryBean();
+        trigger.setJobDetail(getJobDetailFromMethod());
+        trigger.setStartDelay(1000);
+        trigger.setRepeatInterval(5000);
+        return trigger;
+    }
+
+    @Bean
+    public CronTriggerFactoryBean getCronTriggerFactoryBean() {
+        CronTriggerFactoryBean trigger = new CronTriggerFactoryBean();
+        trigger.setJobDetail(getJobDetailFromMethod());
+        trigger.setCronExpression("0 0 6 * * ?");
+
+        return trigger;
+    }
+
+    @Bean
+    public SimpleTrigger getSimpleTrigger() {
+        return getSimpleTriggerFactoryBean().getObject();
+    }
+
+    @Bean
+    public CronTrigger getCronTrigger() {
+        return getCronTriggerFactoryBean().getObject();
+    }
+
+    @Bean
+    public SchedulerFactoryBean getSchedulerFactoryBean() {
+        SchedulerFactoryBean scheduler = new SchedulerFactoryBean();
+        scheduler.setTriggers(getSimpleTrigger(), getCronTrigger());
+
+        return scheduler;
+    }
+
+    @Bean
+    public ComputerInfoSender getComputerInfoSender() {
+        return new ComputerInfoSender();
+    }
 }
