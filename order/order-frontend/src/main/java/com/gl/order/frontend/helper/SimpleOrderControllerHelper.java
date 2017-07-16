@@ -26,6 +26,7 @@ public class SimpleOrderControllerHelper {
 
         resp.setRetCode(RetCodeMsgDict.CODE_SUCC);
         resp.setRetMsg(RetCodeMsgDict.MSG_SUCC);
+        resp.setMessageType(MessageType.NormalResp.ordinal());
         return resp;
     }
 
@@ -39,6 +40,7 @@ public class SimpleOrderControllerHelper {
         resp.setRetCode("0000");
         resp.setResponseTime(DateTimeUtils.datetime2string());
         resp.setServerId(getServerId());
+        resp.setMessageId(getMessageId());
         return resp;
     }
 
