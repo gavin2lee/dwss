@@ -18,7 +18,7 @@
         ">
 
 	<context:property-placeholder
-		location="classpath:jdbc.properties,classpath:order-server.properties"
+		location="classpath:jdbc.properties,classpath:order-server.properties,${user.home}/order/order-server.properties"
 		ignore-unresolvable="true" ignore-resource-not-found="true" />
 
 	<context:component-scan base-package="com.gl.order.client.batch" />
