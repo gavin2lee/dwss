@@ -18,7 +18,7 @@
         ">
 
 	<context:property-placeholder
-		location="classpath:jdbc.properties"
+		location="classpath:jdbc.properties,classpath:order-server.properties"
 		ignore-unresolvable="true" ignore-resource-not-found="true" />
 
 	<context:component-scan base-package="com.gl.order.client.batch" />
@@ -61,7 +61,14 @@
 		<property name="filters" value="mergeStat" />
 	</bean>
 
+	<bean id="httpServerConfiguration" class="com.gl.order.client.config.HttpServerConfiguration">
+		<property name="remoteHost" value="${http.remote.server.host}"/>
+		<property name="schema" value="${http.remote.server.schema}"/>
+		<property name="remotePort" value="${http.remote.server.port}"/>
+	</bean>
+	
 	<bean id="httpRemoteServer" class="com.gl.order.client.sender.HttpRemoteServer">
+		<property name="httpServerConfiguration" ref="httpServerConfiguration"/>
 	</bean>
 
 	<bean id="simpleOrderSender" class="com.gl.order.client.sender.SimpleOrderSender">
@@ -72,31 +79,24 @@
 		<property name="name" value="simpleBean" />
 	</bean>
 
-	<bean id="simpleOrderHeartBeatJob"
-		class="com.gl.order.client.batch.simpleorder.job.SimpleOrderHeartBeatJob">
-		<property name="simpleOrderSender" ref="simpleOrderSender" />
+	<bean name="simpleOrderHeartBeatTask"
+		class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass" value="com.gl.order.client.batch.simpleorder.job.SimpleOrderHeartBeatJob"/>
+		<property name="durability" value="true"/>
+		<property name="requestsRecovery" value="true"/>
 	</bean>
 
-	<bean id="simpleOrderJobObjectEx"
-		class="com.gl.order.client.batch.simpleorder.job.SimpleOrderJobEx"></bean>
-
-	<bean name="simpleOrderHeartBeatJobDetail"
-		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
-		<property name="targetObject" ref="simpleOrderHeartBeatJob" />
-		<property name="targetMethod" value="executeInternal" />
-
-	</bean>
-
-	<bean id="simpleOrderJobEx"
-		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
-		<property name="targetObject" ref="simpleOrderJobObjectEx" />
-		<property name="targetMethod" value="executeInternal" />
+	<bean id="simpleOrderJobExTask"
+		class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass" value="com.gl.order.client.batch.simpleorder.job.SimpleOrderJobEx" />
+		<property name="durability" value="true"/>
+		<property name="requestsRecovery" value="true"/>
 	</bean>
 
 	<bean id="simpleOrderHeartBeatTrigger"
 		class="org.springframework.scheduling.quartz.SimpleTriggerFactoryBean">
 		<!-- see the example of method invoking job above -->
-		<property name="jobDetail" ref="simpleOrderHeartBeatJobDetail" />
+		<property name="jobDetail" ref="simpleOrderHeartBeatTask" />
 		<!-- 10 seconds -->
 		<property name="startDelay" value="10000" />
 		<!-- repeat every 30 seconds -->
@@ -107,12 +107,12 @@
 		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
 		<property name="name" value="simpleOrderCronTrigger" />
 		<property name="group" value="simpleOrder" />
-		<property name="jobDetail" ref="simpleOrderJobEx" />
+		<property name="jobDetail" ref="simpleOrderJobExTask" />
 		<property name="cronExpression" value="0 0/10 * * * ?" />
 	</bean>
 
 	<bean id="simpleOrderScheduler"
-		class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		class="org.springframework.scheduling.quartz.SchedulerFactoryBean" destroy-method="destroy">
 		<property name="schedulerName" value="simpleOrderScheduler" />
 		<property name="dataSource" ref="dataSource"/>
 		<property name="triggers">
@@ -121,6 +121,7 @@
 				<ref bean="simpleOrderHeartBeatTrigger" />
 			</list>
 		</property>
+		<property name="applicationContextSchedulerContextKey" value="K_APPLICATION_CONTEXT"/>
 	</bean>
 
 </beans>

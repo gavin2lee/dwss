@@ -1,7 +1,12 @@
 package com.gl.order.client.batch.simpleorder.job;
 
+import org.quartz.JobExecutionContext;
+import org.quartz.JobExecutionException;
+import org.quartz.SchedulerException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationContext;
+import org.springframework.scheduling.quartz.QuartzJobBean;
 
 import com.gl.order.client.batch.config.SimpleOrderConfiguration;
 import com.gl.order.client.batch.exception.OrderJobExecutionException;
@@ -13,8 +18,9 @@ import com.gl.order.common.dict.MessageType;
 import com.gl.order.common.msg.CommonResponse;
 import com.gl.order.common.util.DateTimeUtils;
 
-public class SimpleOrderHeartBeatJob {
+public class SimpleOrderHeartBeatJob extends QuartzJobBean{
     private static final Logger log = LoggerFactory.getLogger(SimpleOrderHeartBeatJob.class);
+    public static final String K_APPLICATION_CONTEXT = "K_APPLICATION_CONTEXT";
 
     private SimpleOrderSender simpleOrderSender;
 
@@ -61,5 +67,23 @@ public class SimpleOrderHeartBeatJob {
     public SimpleOrderConfiguration getSimpleOrderConfiguration() {
         return simpleOrderConfiguration;
     }
+
+	@Override
+	protected void executeInternal(JobExecutionContext context) throws JobExecutionException {
+		try {
+			ApplicationContext applicationCtx = (ApplicationContext) context.getScheduler().getContext().get(K_APPLICATION_CONTEXT);
+			
+			simpleOrderSender = applicationCtx.getBean("simpleOrderSender", SimpleOrderSender.class);
+			log.info("******"+simpleOrderSender);
+			executeInternal();
+		} catch (OrderJobExecutionException e) {
+			log.error("", e);
+			throw new JobExecutionException(e);
+		} catch (SchedulerException e) {
+			log.error("", e);
+			throw new JobExecutionException(e);
+		}
+		
+	}
 
 }

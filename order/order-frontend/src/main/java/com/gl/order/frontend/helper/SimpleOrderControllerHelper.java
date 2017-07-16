@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 
 import com.gl.order.common.dict.MessageType;
 import com.gl.order.common.dict.RetCodeMsgDict;
+import com.gl.order.common.util.DateTimeUtils;
 import com.gl.order.frontend.config.SysConfiguration;
 import com.gl.order.frontend.msg.SimpleOrderReq;
 import com.gl.order.frontend.msg.SimpleOrderResp;
@@ -35,6 +36,9 @@ public class SimpleOrderControllerHelper {
     public SimpleOrderResp buildHeartBeatResp(SimpleOrderReq req) {
         SimpleOrderResp resp = new SimpleOrderResp();
         resp.setMessageType(MessageType.HeartBeatResp.ordinal());
+        resp.setRetCode("0000");
+        resp.setResponseTime(DateTimeUtils.datetime2string());
+        resp.setServerId(getServerId());
         return resp;
     }
 
