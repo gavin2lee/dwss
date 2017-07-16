@@ -18,7 +18,10 @@
         ">
 
     <context:property-placeholder
-        location="classpath:jdbc.properties,classpath:order-server.properties,${user.home}/order/order-server.properties"
+        location="classpath:jdbc.properties,
+        classpath:order-server.properties,
+        file:${user.home}/order/order-server.properties,
+        file:${user.home}/order/order-client.properties"
         ignore-unresolvable="true" ignore-resource-not-found="true" />
 
     <context:component-scan base-package="com.gl.order.client.batch" />
@@ -65,6 +68,11 @@
         <property name="remoteHost" value="${http.remote.server.host}" />
         <property name="schema" value="${http.remote.server.schema}" />
         <property name="remotePort" value="${http.remote.server.port}" />
+    </bean>
+    
+    <bean id="simpleOrderConfiguration" class="com.gl.order.client.batch.config.SimpleOrderConfiguration">
+        <property name="systemId" value="${http.client.systemid}"/>
+        <property name="clientId" value="${http.client.clientid}"/>
     </bean>
 
     <bean id="httpRemoteServer" class="com.gl.order.client.sender.HttpRemoteServer">

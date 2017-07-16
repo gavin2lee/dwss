@@ -1,6 +1,5 @@
 package com.gl.order.client.batch.spring;
 
-
 import java.io.IOException;
 
 import org.junit.Before;
@@ -15,6 +14,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(locations = { "classpath:spring/quartz-application.xml" })
 public class SpringQuartzTest {
     private static final Logger log = LoggerFactory.getLogger(SpringQuartzTest.class);
+
     @Before
     public void setUp() {
 
@@ -23,7 +23,7 @@ public class SpringQuartzTest {
     @Test
     public void test() {
         log.info("test start");
-        
+
         try {
             System.in.read();
         } catch (IOException e) {

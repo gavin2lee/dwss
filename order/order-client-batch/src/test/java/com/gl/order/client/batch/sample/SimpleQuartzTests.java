@@ -28,17 +28,16 @@ public class SimpleQuartzTests {
 
             JobDetail job = JobBuilder.newJob(SimpleJob.class).withIdentity("SimpleJob3", "test").build();
             job.getJobDataMap().put("Author", "Gavin Li");
-            
+
             Trigger trigger = TriggerBuilder.newTrigger().withIdentity("simpleTrigger3", "test").startNow()
                     .withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInSeconds(1).repeatForever())
                     .build();
-            
-            
+
             scheduler.scheduleJob(job, trigger);
             scheduler.getListenerManager().addJobListener(new SimpleJobListener());
             scheduler.getListenerManager().addTriggerListener(new SimpleTriggerListener());
-            
-            Thread.sleep(6000*1000);
+
+            Thread.sleep(6000 * 1000);
             scheduler.shutdown();
         } catch (SchedulerException e) {
             e.printStackTrace();

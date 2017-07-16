@@ -27,7 +27,7 @@ public class SimpleOrderController {
 
     @PostMapping(path = "/simpleorders")
     public SimpleOrderResp createOrder(@RequestBody SimpleOrderReq req) {
-        log.info(String.format("<<< Server RECV:%s", req));
+        log.info(String.format("<<< RECV:%s", req));
         SimpleOrderResp resp = null;
         
         if(req.getMessageType() == MessageType.HeartBeatReq.ordinal()){
@@ -36,11 +36,12 @@ public class SimpleOrderController {
             resp = processCreateOrder(req);
         }
 
-        log.info(String.format(">>> Server SEND:%s", resp));
+        log.info(String.format(">>> SEND:%s", resp));
         return resp;
     }
 
     protected SimpleOrderResp processCreateOrder(SimpleOrderReq req) {
+        log.info("***********   create order st *********");
         SimpleOrder orderReq = req.getOrder();
         SimpleOrderResp resp = null;
         try {
@@ -51,6 +52,7 @@ public class SimpleOrderController {
             resp = helper.buildAbnormalResp(orderReq, e);
         }
 
+        log.info("***********   create order ed *********");
         return resp;
     }
 

@@ -18,7 +18,7 @@ import com.gl.order.common.dict.MessageType;
 import com.gl.order.common.msg.CommonResponse;
 import com.gl.order.common.util.DateTimeUtils;
 
-public class SimpleOrderHeartBeatJob extends QuartzJobBean{
+public class SimpleOrderHeartBeatJob extends QuartzJobBean {
     private static final Logger log = LoggerFactory.getLogger(SimpleOrderHeartBeatJob.class);
     public static final String K_APPLICATION_CONTEXT = "K_APPLICATION_CONTEXT";
 
@@ -68,22 +68,25 @@ public class SimpleOrderHeartBeatJob extends QuartzJobBean{
         return simpleOrderConfiguration;
     }
 
-	@Override
-	protected void executeInternal(JobExecutionContext context) throws JobExecutionException {
-		try {
-			ApplicationContext applicationCtx = (ApplicationContext) context.getScheduler().getContext().get(K_APPLICATION_CONTEXT);
-			
-			simpleOrderSender = applicationCtx.getBean("simpleOrderSender", SimpleOrderSender.class);
-			log.info("******"+simpleOrderSender);
-			executeInternal();
-		} catch (OrderJobExecutionException e) {
-			log.error("", e);
-			throw new JobExecutionException(e);
-		} catch (SchedulerException e) {
-			log.error("", e);
-			throw new JobExecutionException(e);
-		}
-		
-	}
+    @Override
+    protected void executeInternal(JobExecutionContext context) throws JobExecutionException {
+        try {
+            ApplicationContext applicationCtx = (ApplicationContext) context.getScheduler().getContext()
+                    .get(K_APPLICATION_CONTEXT);
+
+            simpleOrderSender = applicationCtx.getBean("simpleOrderSender", SimpleOrderSender.class);
+            simpleOrderConfiguration = applicationCtx.getBean("simpleOrderConfiguration",
+                    SimpleOrderConfiguration.class);
+            log.info("******" + simpleOrderSender);
+            executeInternal();
+        } catch (OrderJobExecutionException e) {
+            log.error("", e);
+            throw new JobExecutionException(e);
+        } catch (SchedulerException e) {
+            log.error("", e);
+            throw new JobExecutionException(e);
+        }
+
+    }
 
 }
