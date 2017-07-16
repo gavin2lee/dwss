@@ -110,7 +110,7 @@
         <property name="name" value="simpleOrderCronTrigger" />
         <property name="group" value="simpleOrder" />
         <property name="jobDetail" ref="simpleOrderJobExTask" />
-        <property name="cronExpression" value="0 0/10 * * * ?" />
+        <property name="cronExpression" value="0 0/2 * * * ?" />
     </bean>
 
     <bean id="simpleOrderScheduler"
