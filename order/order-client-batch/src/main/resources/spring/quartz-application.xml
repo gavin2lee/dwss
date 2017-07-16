@@ -1,83 +1,126 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-    xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context" 
-    xmlns:dubbo="http://code.alibabatech.com/schema/dubbo" xmlns:mvc="http://www.springframework.org/schema/mvc" 
-    xmlns:util="http://www.springframework.org/schema/util" xmlns:aop="http://www.springframework.org/schema/aop" 
-    xsi:schemaLocation="http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd 
-    http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd 
-    http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd 
-    http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd 
-    http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd 
-    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd 
-    http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd"> -->
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context" 
+	xmlns:dubbo="http://code.alibabatech.com/schema/dubbo" xmlns:mvc="http://www.springframework.org/schema/mvc" 
+	xmlns:util="http://www.springframework.org/schema/util" xmlns:aop="http://www.springframework.org/schema/aop" 
+	xsi:schemaLocation="http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd 
+	http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd 
+	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd 
+	http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd 
+	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd 
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd 
+	http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd"> -->
 <beans xmlns="http://www.springframework.org/schema/beans"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
-    xsi:schemaLocation="http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
         http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
         ">
 
-    <context:component-scan base-package="com.gl.order.client.batch" />
+	<context:property-placeholder
+		location="classpath:jdbc.properties"
+		ignore-unresolvable="true" ignore-resource-not-found="true" />
 
-    <bean id="httpRemoteServer" class="com.gl.order.client.sender.HttpRemoteServer">
-    </bean>
+	<context:component-scan base-package="com.gl.order.client.batch" />
 
-    <bean id="simpleOrderSender" class="com.gl.order.client.sender.SimpleOrderSender">
-        <property name="httpRemoteServer" ref="httpRemoteServer" />
-    </bean>
+	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
+		<property name="driverClassName" value="${jdbc.driver.class}" />
+		<property name="url" value="${jdbc.url}" />
+		<property name="username" value="${jdbc.user}" />
+		<property name="password" value="${jdbc.pswd}" />
+		<!-- 初始化连接大小 -->
+		<property name="initialSize" value="0" />
+		<!-- 连接池最大使用连接数量 -->
+		<property name="maxActive" value="20" />
+		<!-- 连接池最小空闲 -->
+		<property name="minIdle" value="0" />
+		<!-- 获取连接最大等待时间 -->
+		<property name="maxWait" value="60000" />
 
-    <bean id="simpleBean" class="com.gl.order.client.batch.bean.SimpleBean">
-        <property name="name" value="simpleBean" />
-    </bean>
+		<property name="validationQuery">
+			<value>${jdbc.validation.query}</value>
+		</property>
+		<property name="testOnBorrow" value="false" />
+		<property name="testOnReturn" value="false" />
+		<property name="testWhileIdle" value="true" />
 
-    <bean id="simpleOrderHeartBeatJob"
-        class="com.gl.order.client.batch.simpleorder.job.SimpleOrderHeartBeatJob">
-        <property name="simpleOrderSender" ref="simpleOrderSender" />
-    </bean>
+		<!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+		<property name="timeBetweenEvictionRunsMillis" value="60000" />
+		<!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
+		<property name="minEvictableIdleTimeMillis" value="25200000" />
 
-    <bean id="simpleOrderJobObjectEx"
-        class="com.gl.order.client.batch.simpleorder.job.SimpleOrderJobEx"></bean>
+		<!-- 打开removeAbandoned功能 -->
+		<property name="removeAbandoned" value="true" />
+		<!-- 1800秒，也就是30分钟 -->
+		<property name="removeAbandonedTimeout" value="1800" />
+		<!-- 关闭abanded连接时输出错误日志 -->
+		<property name="logAbandoned" value="true" />
 
-    <bean name="simpleOrderHeartBeatJobDetail"
-        class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
-        <property name="targetObject" ref="simpleOrderHeartBeatJob" />
-        <property name="targetMethod" value="executeInternal" />
+		<!-- 监控数据库 -->
+		<!-- <property name="filters" value="stat" /> -->
+		<property name="filters" value="mergeStat" />
+	</bean>
 
-    </bean>
+	<bean id="httpRemoteServer" class="com.gl.order.client.sender.HttpRemoteServer">
+	</bean>
 
-    <bean id="simpleOrderJobEx"
-        class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
-        <property name="targetObject" ref="simpleOrderJobObjectEx" />
-        <property name="targetMethod" value="executeInternal" />
-    </bean>
+	<bean id="simpleOrderSender" class="com.gl.order.client.sender.SimpleOrderSender">
+		<property name="httpRemoteServer" ref="httpRemoteServer" />
+	</bean>
 
-    <bean id="simpleOrderHeartBeatTrigger"
-        class="org.springframework.scheduling.quartz.SimpleTriggerFactoryBean">
-        <!-- see the example of method invoking job above -->
-        <property name="jobDetail" ref="simpleOrderHeartBeatJobDetail" />
-        <!-- 10 seconds -->
-        <property name="startDelay" value="10000" />
-        <!-- repeat every 30 seconds -->
-        <property name="repeatInterval" value="30000" />
-    </bean>
+	<bean id="simpleBean" class="com.gl.order.client.batch.bean.SimpleBean">
+		<property name="name" value="simpleBean" />
+	</bean>
 
-    <bean id="simpleOrderCronTrigger"
-        class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
-        <property name="name" value="simpleOrderCronTrigger" />
-        <property name="group" value="simpleOrder" />
-        <property name="jobDetail" ref="simpleOrderJobEx" />
-        <property name="cronExpression" value="0 0/10 * * * ?" />
-    </bean>
+	<bean id="simpleOrderHeartBeatJob"
+		class="com.gl.order.client.batch.simpleorder.job.SimpleOrderHeartBeatJob">
+		<property name="simpleOrderSender" ref="simpleOrderSender" />
+	</bean>
 
-    <bean id="simpleOrderScheduler"
-        class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
-        <property name="schedulerName" value="simpleOrderScheduler" />
-        <property name="triggers">
-            <list>
-                <ref bean="simpleOrderCronTrigger" />
-                <ref bean="simpleOrderHeartBeatTrigger" />
-            </list>
-        </property>
-    </bean>
+	<bean id="simpleOrderJobObjectEx"
+		class="com.gl.order.client.batch.simpleorder.job.SimpleOrderJobEx"></bean>
+
+	<bean name="simpleOrderHeartBeatJobDetail"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="simpleOrderHeartBeatJob" />
+		<property name="targetMethod" value="executeInternal" />
+
+	</bean>
+
+	<bean id="simpleOrderJobEx"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="simpleOrderJobObjectEx" />
+		<property name="targetMethod" value="executeInternal" />
+	</bean>
+
+	<bean id="simpleOrderHeartBeatTrigger"
+		class="org.springframework.scheduling.quartz.SimpleTriggerFactoryBean">
+		<!-- see the example of method invoking job above -->
+		<property name="jobDetail" ref="simpleOrderHeartBeatJobDetail" />
+		<!-- 10 seconds -->
+		<property name="startDelay" value="10000" />
+		<!-- repeat every 30 seconds -->
+		<property name="repeatInterval" value="30000" />
+	</bean>
+
+	<bean id="simpleOrderCronTrigger"
+		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="name" value="simpleOrderCronTrigger" />
+		<property name="group" value="simpleOrder" />
+		<property name="jobDetail" ref="simpleOrderJobEx" />
+		<property name="cronExpression" value="0 0/10 * * * ?" />
+	</bean>
+
+	<bean id="simpleOrderScheduler"
+		class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="schedulerName" value="simpleOrderScheduler" />
+		<property name="dataSource" ref="dataSource"/>
+		<property name="triggers">
+			<list>
+				<ref bean="simpleOrderCronTrigger" />
+				<ref bean="simpleOrderHeartBeatTrigger" />
+			</list>
+		</property>
+	</bean>
 
 </beans>
