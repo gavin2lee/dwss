@@ -1,7 +1,13 @@
 package com.gl.order.common.dict;
 
 public enum OrderStatus {
-    Normal("NOR");
+    Normal("NOR"), /**/
+    New("NEW"), /**/
+    Amend("AMEND"), /**/
+    Cancel("CANCEL"), /**/
+    Reject("REJECT"), /**/
+    InProcess("INPROC"), /**/
+    Succ("SUCC");/**/
 
     private final String statusName;
 

@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import com.gl.order.common.dict.OrderStatus;
 import com.gl.order.frontend.exception.OrderException;
 import com.gl.order.frontend.pojo.SimpleOrder;
 
@@ -14,6 +15,7 @@ public class SimpleOrderService {
     public SimpleOrder order(SimpleOrder order) throws OrderException {
         log.info(String.format("%s", order));
 
-        return null;
+        order.setStatus(OrderStatus.InProcess.getStatusName());
+        return order;
     }
 }
