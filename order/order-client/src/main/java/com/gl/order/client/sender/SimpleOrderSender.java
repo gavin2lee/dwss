@@ -17,10 +17,13 @@ public class SimpleOrderSender {
 
     private String context = "/order/simpleorders";
 
+    private String heartbeatContext = "/order/heartbeats";
+
     public CommonResponse send(CommonRequest request) throws ClientException {
         log.info(String.format("SEND>>>%s", request));
         String body = JSONObject.toJSONString(request);
-        String respBody = httpRemoteServer.post(body, context);
+        String contextPath = (request.getMessageType() == CommonRequest.HEARTBEAT_REQ_MSG ? heartbeatContext : context);
+        String respBody = httpRemoteServer.post(body, contextPath);
 
         SimpleOrderResp orderResp = JSON.parseObject(respBody, SimpleOrderResp.class);
         log.info(String.format("RECV<<<%s", orderResp));

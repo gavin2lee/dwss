@@ -1,258 +1,313 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
- xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
- <modelVersion>4.0.0</modelVersion>
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
- <parent>
-  <groupId>com.gl.order</groupId>
-  <artifactId>order-parent</artifactId>
-  <version>1.0.0.0-SNAPSHOT</version>
- </parent>
+    <parent>
+        <groupId>com.gl.order</groupId>
+        <artifactId>order-parent</artifactId>
+        <version>1.0.0.0-SNAPSHOT</version>
+    </parent>
 
- <artifactId>order-client-batch</artifactId>
+    <artifactId>order-client-batch</artifactId>
 
- <name>Order Client Batch</name>
- <packaging>jar</packaging>
+    <name>Order Client Batch</name>
+    <packaging>jar</packaging>
 
- <dependencies>
-  <dependency>
-   <groupId>com.gl.order</groupId>
-   <artifactId>order-common</artifactId>
-   <version>${project.parent.version}</version>
-  </dependency>
+    <dependencies>
+        <dependency>
+            <groupId>com.gl.order</groupId>
+            <artifactId>order-common</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
 
-  <dependency>
-   <groupId>com.gl.order</groupId>
-   <artifactId>order-client</artifactId>
-   <version>${project.parent.version}</version>
-  </dependency>
+        <dependency>
+            <groupId>com.gl.order</groupId>
+            <artifactId>order-client</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
 
-  <dependency>
-   <groupId>org.quartz-scheduler</groupId>
-   <artifactId>quartz</artifactId>
-   <version>2.2.1</version>
-  </dependency>
-  <dependency>
-   <groupId>org.quartz-scheduler</groupId>
-   <artifactId>quartz-jobs</artifactId>
-   <version>2.2.1</version>
-  </dependency>
+        <dependency>
+            <groupId>org.quartz-scheduler</groupId>
+            <artifactId>quartz</artifactId>
+            <version>2.2.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.quartz-scheduler</groupId>
+            <artifactId>quartz-jobs</artifactId>
+            <version>2.2.1</version>
+        </dependency>
 
-  <!-- ############# DB BEGIN ########### -->
+        <!-- ############# DB BEGIN ########### -->
 
-  <dependency>
-   <groupId>mysql</groupId>
-   <artifactId>mysql-connector-java</artifactId>
-   <version>5.1.42</version>
-  </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.42</version>
+        </dependency>
 
-  <dependency>
-   <groupId>commons-dbutils</groupId>
-   <artifactId>commons-dbutils</artifactId>
-   <version>1.6</version>
-  </dependency>
+        <dependency>
+            <groupId>commons-dbutils</groupId>
+            <artifactId>commons-dbutils</artifactId>
+            <version>1.6</version>
+        </dependency>
 
-  <dependency>
-   <groupId>com.alibaba</groupId>
-   <artifactId>druid</artifactId>
-   <version>1.1.0</version>
-  </dependency>
-  <!-- ############ DB END ############# -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid</artifactId>
+            <version>1.1.0</version>
+        </dependency>
+        <!-- ############ DB END ############# -->
 
-  <!-- ############ Spring BEGIN ############## -->
-  <dependency>
-   <groupId>org.springframework</groupId>
-   <artifactId>spring-context</artifactId>
-   <version>${spring.version}</version>
-  </dependency>
+        <!-- ############ Spring BEGIN ############## -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
 
-  <dependency>
-   <groupId>org.springframework</groupId>
-   <artifactId>spring-context-support</artifactId>
-   <version>${spring.version}</version>
-  </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context-support</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
 
-  <dependency>
-   <groupId>org.springframework</groupId>
-   <artifactId>spring-tx</artifactId>
-   <version>${spring.version}</version>
-  </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-tx</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
 
-  <dependency>
-   <groupId>org.springframework</groupId>
-   <artifactId>spring-jdbc</artifactId>
-   <version>${spring.version}</version>
-  </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jdbc</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
 
-  <!-- ############ Spring END ################ -->
+        <!-- ############ Spring END ################ -->
 
 
-  <!-- ############ Log BEGIN ################ -->
-  <dependency>
-   <groupId>org.slf4j</groupId>
-   <artifactId>slf4j-api</artifactId>
-   <version>${slf4j.version}</version>
-  </dependency>
+        <!-- ############ Log BEGIN ################ -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
 
-  <dependency>
-   <groupId>org.slf4j</groupId>
-   <artifactId>jcl-over-slf4j</artifactId>
-   <version>${slf4j.version}</version>
-   <scope>runtime</scope>
-  </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>jcl-over-slf4j</artifactId>
+            <version>${slf4j.version}</version>
+            <scope>runtime</scope>
+        </dependency>
 
-  <dependency>
-   <groupId>ch.qos.logback</groupId>
-   <artifactId>logback-classic</artifactId>
-   <version>${logback.version}</version>
-   <scope>runtime</scope>
-  </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>${logback.version}</version>
+            <scope>runtime</scope>
+        </dependency>
 
-  <dependency>
-   <groupId>ch.qos.logback</groupId>
-   <artifactId>logback-core</artifactId>
-   <version>${logback.version}</version>
-   <scope>runtime</scope>
-  </dependency>
-  <!-- ############ Log END ################ -->
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-core</artifactId>
+            <version>${logback.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+        <!-- ############ Log END ################ -->
 
-  <!-- ############ Test BEGIN ############### -->
-  <dependency>
-   <groupId>junit</groupId>
-   <artifactId>junit</artifactId>
-   <version>4.12</version>
-   <scope>test</scope>
-  </dependency>
+        <!-- ############ Test BEGIN ############### -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
+        </dependency>
 
-  <dependency>
-   <groupId>org.hamcrest</groupId>
-   <artifactId>hamcrest-core</artifactId>
-   <version>1.3</version>
-   <scope>test</scope>
-  </dependency>
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest-core</artifactId>
+            <version>1.3</version>
+            <scope>test</scope>
+        </dependency>
 
-  <dependency>
-   <groupId>org.hamcrest</groupId>
-   <artifactId>hamcrest-library</artifactId>
-   <version>1.3</version>
-   <scope>test</scope>
-  </dependency>
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest-library</artifactId>
+            <version>1.3</version>
+            <scope>test</scope>
+        </dependency>
 
-  <dependency>
-   <groupId>org.mockito</groupId>
-   <artifactId>mockito-core</artifactId>
-   <version>2.2.11</version>
-   <scope>test</scope>
-  </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>2.2.11</version>
+            <scope>test</scope>
+        </dependency>
 
-  <dependency>
-   <groupId>org.springframework</groupId>
-   <artifactId>spring-test</artifactId>
-   <version>${spring.version}</version>
-   <scope>test</scope>
-  </dependency>
-  <!-- ############ Test END ############### -->
- </dependencies>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>${spring.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- ############ Test END ############### -->
+    </dependencies>
 
- <build>
-  <plugins>
-   <plugin>
-    <groupId>org.apache.maven.plugins</groupId>
-    <artifactId>maven-resources-plugin</artifactId>
-    <version>2.6</version>
-    <configuration>
-     <encoding>UTF-8</encoding>
-    </configuration>
-   </plugin>
-   <plugin>
-    <groupId>org.apache.maven.plugins</groupId>
-    <artifactId>maven-compiler-plugin</artifactId>
-    <version>3.3</version>
-    <configuration>
-     <source>1.8</source>
-     <target>1.8</target>
-     <encoding>UTF-8</encoding>
-    </configuration>
-   </plugin>
-  </plugins>
- </build>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>2.6</version>
+                <configuration>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.3</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
- <profiles>
-  <profile>
-   <id>prod</id>
-   <build>
-    <finalName>order-cient-batch</finalName>
-    <plugins>
-     <plugin>
-      <groupId>org.apache.maven.plugins</groupId>
-      <artifactId>maven-dependency-plugin</artifactId>
-      <version>2.8</version>
-      <executions>
-       <execution>
-        <id>copy-dependencies</id>
-        <phase>prepare-package</phase>
-        <goals>
-         <goal>copy-dependencies</goal>
-        </goals>
-        <configuration>
-         <outputDirectory>${project.build.directory}/lib</outputDirectory>
-         <overWriteReleases>false</overWriteReleases>
-         <overWriteSnapshots>false</overWriteSnapshots>
-         <overWriteIfNewer>true</overWriteIfNewer>
-         <includeScope>compile</includeScope>
-        </configuration>
-       </execution>
-      </executions>
-     </plugin>
-    </plugins>
-   </build>
-  </profile>
+    <profiles>
+        <profile>
+            <id>prod</id>
+            <build>
+                <finalName>order-cient-batch</finalName>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-dependency-plugin</artifactId>
+                        <version>2.8</version>
+                        <executions>
+                            <execution>
+                                <id>copy-dependencies</id>
+                                <phase>prepare-package</phase>
+                                <goals>
+                                    <goal>copy-dependencies</goal>
+                                </goals>
+                                <configuration>
+                                    <outputDirectory>${project.build.directory}/lib</outputDirectory>
+                                    <overWriteReleases>false</overWriteReleases>
+                                    <overWriteSnapshots>false</overWriteSnapshots>
+                                    <overWriteIfNewer>true</overWriteIfNewer>
+                                    <includeScope>compile</includeScope>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
 
-  <profile>
-   <id>dev</id>
-   <build>
-    <plugins>
-     <plugin>
-      <groupId>org.apache.maven.plugins</groupId>
-      <artifactId>maven-jar-plugin</artifactId>
-      <version>2.4</version>
-      <configuration>
-       <archive>
-        <manifest>
-         <addClasspath>true</addClasspath>
-         <classpathPrefix>lib/</classpathPrefix>
-         <mainClass>baigong.loganalysis.ExtractLog</mainClass>
-        </manifest>
-       </archive>
-       <excludes>
-        <exclude>${project.basedir}/xml/*</exclude>
-       </excludes>
-      </configuration>
-     </plugin>
-    </plugins>
-   </build>
-  </profile>
- </profiles>
+        <profile>
+            <id>dev</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-jar-plugin</artifactId>
+                        <version>2.4</version>
+                        <configuration>
+                            <archive>
+                                <manifest>
+                                    <addClasspath>true</addClasspath>
+                                    <classpathPrefix>lib/</classpathPrefix>
+                                    <mainClass>com.gl.order.client.batch.boot.SimpleBatchJobBootstrap</mainClass>
+                                </manifest>
+                            </archive>
+                            <excludes>
+                                <exclude>${project.basedir}/xml/*</exclude>
+                            </excludes>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
 
- <properties>
-  <project.build.source.encoding>UTF-8</project.build.source.encoding>
-  <java.version>1.8</java.version>
-  <servlet.version>3.1.0</servlet.version>
-  <spring.version>3.2.18.RELEASE</spring.version>
+        <profile>
+            <id>test</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <version>1.1.1</version>
+                        <executions>
+                            <execution>
+                                <phase>test</phase>
+                                <goals>
+                                    <goal>java</goal>
+                                </goals>
+                                <configuration>
+                                    <mainClass>com.gl.order.client.batch.boot.SimpleBatchJobBootstrap</mainClass>
+                                    <arguments>
+                                        <argument>arg0</argument>
+                                        <argument>arg1</argument>
+                                    </arguments>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
 
-  <slf4j.version>1.7.13</slf4j.version>
-  <logback.version>1.1.3</logback.version>
+        <profile>
+            <id>exe</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <version>1.2.1</version>
+                        <configuration>
+                            <executable>java</executable> <!-- executable指的是要执行什么样的命令 -->
+                            <arguments>
+                                <argument>-DsystemProperty1=value1</argument> <!-- 这是一个系统属性参数 -->
+                                <argument>-DsystemProperty2=value2</argument> <!-- 这是一个系统属性参数 -->
+                                <argument>-XX:MaxPermSize=256m</argument> <!-- 这是一个JVM参数 -->
+                                <argument>-classpath</argument> <!-- 这是classpath属性，其值就是下面的<classpath/> -->
+                                <classpath /> <!-- 这是exec插件最有价值的地方，关于工程的classpath并不需要手动指定，它将由exec自动计算得出 -->
+                                <argument>com.gl.order.client.batch.boot.SimpleBatchJobBootstrap</argument> <!-- 程序入口，主类名称 -->
+                                <argument>arg1</argument> <!-- 程序的第一个命令行参数 -->
+                                <argument>arg2</argument> <!-- 程序的第二个命令行参数 -->
+                                <!-- mvn exec:exec -->
+                            </arguments>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
-  <jackson.version>2.6.3</jackson.version>
+    <properties>
+        <project.build.source.encoding>UTF-8</project.build.source.encoding>
+        <java.version>1.8</java.version>
+        <servlet.version>3.1.0</servlet.version>
+        <spring.version>3.2.18.RELEASE</spring.version>
 
-  <commons.lang3.version>3.4</commons.lang3.version>
-  <ehcache.version>2.10.1</ehcache.version>
-  <org.apache.tomcat.maven.version>2.2</org.apache.tomcat.maven.version>
+        <slf4j.version>1.7.13</slf4j.version>
+        <logback.version>1.1.3</logback.version>
 
-  <shiro.version>1.3.2</shiro.version>
+        <jackson.version>2.6.3</jackson.version>
 
-  <junit.version>4.12</junit.version>
-  <hamcrest.version>1.3</hamcrest.version>
- </properties>
+        <commons.lang3.version>3.4</commons.lang3.version>
+        <ehcache.version>2.10.1</ehcache.version>
+        <org.apache.tomcat.maven.version>2.2</org.apache.tomcat.maven.version>
+
+        <shiro.version>1.3.2</shiro.version>
+
+        <junit.version>4.12</junit.version>
+        <hamcrest.version>1.3</hamcrest.version>
+    </properties>
 
 </project>

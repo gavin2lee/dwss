@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
  <include resource="org/springframework/boot/logging/logback/base.xml" />
- <logger name="com.gl.dwss.cf.booking.server" level="DEBUG" />
+ <logger name="com.gl.order.client.batch" level="DEBUG" />
  <springProfile name="staging">
   <logger name="sample.logback" level="TRACE" />
  </springProfile>

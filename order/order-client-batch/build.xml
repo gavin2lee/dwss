@@ -77,7 +77,7 @@
      </jar>
    </target>
 
-   <target name="assemble-prod" depends="">
+   <target name="assemble-prod" depends="package">
      <copy todir="">
 
      </copy>

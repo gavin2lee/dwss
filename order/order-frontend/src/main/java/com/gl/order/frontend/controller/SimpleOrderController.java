@@ -29,14 +29,25 @@ public class SimpleOrderController {
     public SimpleOrderResp createOrder(@RequestBody SimpleOrderReq req) {
         log.info(String.format("<<< RECV:%s", req));
         SimpleOrderResp resp = null;
-        
-        if(req.getMessageType() == MessageType.HeartBeatReq.ordinal()){
-            resp = processHeartBeatOrder(req);
-        }else{
-            resp = processCreateOrder(req);
-        }
+
+        resp = processCreateOrder(req);
 
         log.info(String.format(">>> SEND:%s", resp));
+        return resp;
+    }
+
+    @PostMapping(path = "/heartbeats")
+    public SimpleOrderResp heartbeat(@RequestBody SimpleOrderReq req) {
+        log.info(String.format("<<< HeartBeat RECV:%s", req));
+
+        SimpleOrderResp resp = null;
+
+        if (req.getMessageType() == MessageType.HeartBeatReq.ordinal()) {
+            resp = processHeartBeatOrder(req);
+        }
+
+        log.info(String.format(">>> HeartBeat SEND:%s", resp));
+
         return resp;
     }
 
