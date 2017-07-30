@@ -56,7 +56,9 @@ public class SimpleOrderController {
         SimpleOrder orderReq = req.getOrder();
         SimpleOrderResp resp = null;
         try {
+            log.info(String.format("before created : %s", req));
             SimpleOrder orderRet = simpleOrderService.order(orderReq);
+            log.info(String.format("after created : %s", orderRet));
             resp = helper.buildResp(orderRet);
         } catch (OrderException e) {
             log.error("", e);
