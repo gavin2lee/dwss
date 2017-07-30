@@ -17,6 +17,7 @@
     <module>./order-client-batch</module>
     <module>./order-online-interface</module>
     <module>./order-online</module>
+		<module>./order-online-web</module>
   </modules>
 
   <properties>
