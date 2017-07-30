@@ -2,6 +2,7 @@ package com.gl.order.frontend.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import com.gl.order.online.exception.OnlineException;
@@ -9,6 +10,7 @@ import com.gl.order.online.inter.SimpleOrderOnlineService;
 import com.gl.order.online.vo.SimpleOrderVO;
 
 @Service("localSimpleOrderOnlineService")
+@Profile("local")
 public class LocalSimpleOrderOnlineService implements SimpleOrderOnlineService {
     private static final Logger log = LoggerFactory.getLogger(LocalSimpleOrderOnlineService.class);
 
