@@ -7,7 +7,7 @@ import com.gl.order.frontend.config.AppConfiguration;
 public class OrderFrontendBootstrap {
 
     /**
-     * mvn spring-boot:run -Dserver.port=10082 -DserverId=s9001
+     * mvn spring-boot:run -Dserver.port=10082 -DserverId=s9001 -Dspring.profiles.active=local
      * @param args
      */
     public static void main(String[] args) {
