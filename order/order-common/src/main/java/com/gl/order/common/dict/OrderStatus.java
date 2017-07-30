@@ -6,7 +6,7 @@ public enum OrderStatus {
     Amend("AMEND"), /**/
     Cancel("CANCEL"), /**/
     Reject("REJECT"), /**/
-    InProcess("INPROC"), /**/
+    InProcess("INPROCESS"), /**/
     Succ("SUCC");/**/
 
     private final String statusName;

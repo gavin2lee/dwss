@@ -69,7 +69,7 @@ public class SimpleOrderJobEx extends QuartzJobBean {
         b.withOrderType(OrderType.NORMAL.ordinal());
         b.withCreateTime(DateTimeUtils.datetime2string());
         b.withProductName(osName);
-        b.withStatus(OrderStatus.Normal.name());
+        b.withStatus(OrderStatus.New.getStatusName());
 
         return b.build();
     }
