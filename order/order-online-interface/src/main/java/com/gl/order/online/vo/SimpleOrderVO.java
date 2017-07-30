@@ -1,6 +1,12 @@
 package com.gl.order.online.vo;
 
-public class SimpleOrderVO {
+import java.io.Serializable;
+
+public class SimpleOrderVO implements Serializable{
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
     /*
      * YYYYMMDD(8digits)+timestamp
      */
