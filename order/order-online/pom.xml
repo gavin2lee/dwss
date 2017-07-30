@@ -21,62 +21,76 @@
    <version>${project.parent.version}</version>
   </dependency>
 
- <!-- ############ Spring BEGIN ############## -->
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-context</artifactId>
-      <version>${spring.version}</version>
-    </dependency>
+  <!-- ############ Spring BEGIN ############## -->
+  <dependency>
+   <groupId>org.springframework</groupId>
+   <artifactId>spring-context</artifactId>
+   <version>${spring.version}</version>
+  </dependency>
 
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-context-support</artifactId>
-      <version>${spring.version}</version>
-    </dependency>
+  <dependency>
+   <groupId>org.springframework</groupId>
+   <artifactId>spring-context-support</artifactId>
+   <version>${spring.version}</version>
+  </dependency>
 
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-tx</artifactId>
-      <version>${spring.version}</version>
-    </dependency>
+  <dependency>
+   <groupId>org.springframework</groupId>
+   <artifactId>spring-tx</artifactId>
+   <version>${spring.version}</version>
+  </dependency>
 
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-jdbc</artifactId>
-      <version>${spring.version}</version>
-    </dependency>
+  <dependency>
+   <groupId>org.springframework</groupId>
+   <artifactId>spring-jdbc</artifactId>
+   <version>${spring.version}</version>
+  </dependency>
 
-    <!-- ############ Spring END ################ -->
+  <!-- ############ Spring END ################ -->
+
+  <!-- ############ Dubbo ########### -->
+  <dependency>
+   <groupId>com.alibaba</groupId>
+   <artifactId>dubbo</artifactId>
+   <version>2.5.3</version>
+   <exclusions>
+    <exclusion>
+     <groupId>org.springframework</groupId>
+     <artifactId>spring</artifactId>
+    </exclusion>
+   </exclusions>
+  </dependency>
+  <!-- ############ Dubbo END ########### -->
 
 
-    <!-- ############ Log BEGIN ################ -->
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-api</artifactId>
-      <version>${slf4j.version}</version>
-    </dependency>
+  <!-- ############ Log BEGIN ################ -->
+  <dependency>
+   <groupId>org.slf4j</groupId>
+   <artifactId>slf4j-api</artifactId>
+   <version>${slf4j.version}</version>
+  </dependency>
 
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>jcl-over-slf4j</artifactId>
-      <version>${slf4j.version}</version>
-      <scope>runtime</scope>
-    </dependency>
+  <dependency>
+   <groupId>org.slf4j</groupId>
+   <artifactId>jcl-over-slf4j</artifactId>
+   <version>${slf4j.version}</version>
+   <scope>runtime</scope>
+  </dependency>
 
-    <dependency>
-      <groupId>ch.qos.logback</groupId>
-      <artifactId>logback-classic</artifactId>
-      <version>${logback.version}</version>
-      <scope>runtime</scope>
-    </dependency>
+  <dependency>
+   <groupId>ch.qos.logback</groupId>
+   <artifactId>logback-classic</artifactId>
+   <version>${logback.version}</version>
+   <scope>runtime</scope>
+  </dependency>
 
-    <dependency>
-      <groupId>ch.qos.logback</groupId>
-      <artifactId>logback-core</artifactId>
-      <version>${logback.version}</version>
-      <scope>runtime</scope>
-    </dependency>
-    <!-- ############ Log END ################ -->
+  <dependency>
+   <groupId>ch.qos.logback</groupId>
+   <artifactId>logback-core</artifactId>
+   <version>${logback.version}</version>
+   <scope>runtime</scope>
+  </dependency>
+  <!-- ############ Log END ################ -->
 
  </dependencies>
 
@@ -102,5 +116,32 @@
    </plugin>
   </plugins>
  </build>
-
+ <profiles>
+  <profile>
+   <id>exe</id>
+   <build>
+    <plugins>
+     <plugin>
+      <groupId>org.codehaus.mojo</groupId>
+      <artifactId>exec-maven-plugin</artifactId>
+      <version>1.2.1</version>
+      <configuration>
+       <executable>java</executable>
+       <arguments>
+        <argument>-DsystemProperty1=value1</argument>
+        <argument>-DsystemProperty2=value2</argument>
+        <argument>-XX:MaxPermSize=256m</argument>
+        <argument>-classpath</argument>
+        <classpath />
+        <argument>com.gl.order.online.service.boot.OrderOnlineBootstrap</argument> <!-- 程序入口，主类名称 -->
+        <argument>arg1</argument>
+        <argument>arg2</argument>
+        <!-- mvn exec:exec -->
+       </arguments>
+      </configuration>
+     </plugin>
+    </plugins>
+   </build>
+  </profile>
+ </profiles>
 </project>

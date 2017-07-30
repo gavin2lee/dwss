@@ -81,4 +81,12 @@ public class SimpleOrderVO {
         this.amt = amt;
     }
 
+    @Override
+    public String toString() {
+        return "SimpleOrderVO [orderId=" + orderId + ", createTime=" + createTime + ", updateTime=" + updateTime
+                + ", bizId=" + bizId + ", orderType=" + orderType + ", status=" + status + ", productName="
+                + productName + ", amt=" + amt + "]";
+    }
+
+    
 }
