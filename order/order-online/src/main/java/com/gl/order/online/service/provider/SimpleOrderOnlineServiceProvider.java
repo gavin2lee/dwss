@@ -14,6 +14,7 @@ public class SimpleOrderOnlineServiceProvider implements SimpleOrderOnlineServic
 
     @Override
     public SimpleOrderVO submit(SimpleOrderVO reqOrder) throws OnlineException {
+        log.info(String.format("RECV:%s", reqOrder));
         log.info(String.format("submit:%s %s %s",reqOrder.getBizId(), reqOrder.getStatus(), reqOrder.getAmt()));
         reqOrder.setStatus(OrderStatus.InProcess.getStatusName());
         reqOrder.setUpdateTime(DateTimeUtils.datetime2string());
