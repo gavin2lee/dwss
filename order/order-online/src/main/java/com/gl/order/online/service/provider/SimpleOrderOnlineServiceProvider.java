@@ -1,4 +1,4 @@
-package com.gl.order.online.inter.provider;
+package com.gl.order.online.service.provider;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
