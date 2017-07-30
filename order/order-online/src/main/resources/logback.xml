@@ -18,9 +18,9 @@
  <appender name="rollingFile"
   class="ch.qos.logback.core.rolling.RollingFileAppender">
   <Encoding>UTF-8</Encoding>
-  <File>../logs/order-client-batch.log</File>
+  <File>../logs/order-online.log</File>
   <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-   <FileNamePattern>../logs/order-client-batch-%d{yyyyMMdd}.log
+   <FileNamePattern>../logs/order-online-%d{yyyyMMdd}.log
    </FileNamePattern>
    <MaxHistory>2</MaxHistory>
   </rollingPolicy>
@@ -32,7 +32,7 @@
 
  <!-- <logger name="com.lachesis.support.auth" level="info"> <appender-ref 
   ref="console" /> </logger> -->
- <root level="info">
+ <root level="debug">
   <appender-ref ref="rollingFile" />
   <appender-ref ref="console" />
  </root>
