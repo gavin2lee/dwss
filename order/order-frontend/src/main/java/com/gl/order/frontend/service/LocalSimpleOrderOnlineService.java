@@ -8,7 +8,7 @@ import com.gl.order.online.exception.OnlineException;
 import com.gl.order.online.inter.SimpleOrderOnlineService;
 import com.gl.order.online.vo.SimpleOrderVO;
 
-@Service("simpleOrderOnlineService")
+@Service("localSimpleOrderOnlineService")
 public class LocalSimpleOrderOnlineService implements SimpleOrderOnlineService {
     private static final Logger log = LoggerFactory.getLogger(LocalSimpleOrderOnlineService.class);
 
