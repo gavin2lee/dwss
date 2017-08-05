@@ -2,6 +2,7 @@ package main;
 
 import(
   "fmt"
+  "custstruct"
 )
 
 func main(){
@@ -13,4 +14,13 @@ func main(){
   var f3 = f1 + f2;
 
   fmt.Println(f3);
+
+
+  user := new(custstruct.User);
+  user.Id = 100;
+  user.Name = "张三";
+
+  user.SayHi();
+
+  fmt.Println(user);
 }
