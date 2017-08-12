@@ -8,6 +8,29 @@ import "reflect"
 
 func main(){
   testEmbedType()
+  fmt.Println("========== test closure =============")
+  testClosure()
+}
+
+var count int = 0;
+
+func increaseCount()(func()){
+  var internalCount int = 0;
+  f := func(){
+    fmt.Printf("internalCount:%d\n",internalCount)
+    internalCount++
+    fmt.Printf("count:%d\n", count)
+    count++
+  }
+
+  return f
+}
+
+func testClosure(){
+  for i:=0;i < 10; i++ {
+    increaseCount()()
+  }
+
 }
 
 
