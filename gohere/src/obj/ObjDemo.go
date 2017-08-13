@@ -8,6 +8,7 @@ import (
 func main(){
   testAnimal()
   testMammal()
+  testCat()
 }
 
 type IAnimal interface{
@@ -22,6 +23,29 @@ type Animal struct{
 type Mammal struct {
   Animal
   age int
+}
+
+type Bird struct{
+  Animal
+  category string
+}
+
+type Cat struct{
+  Mammal
+  color string
+}
+
+func testCat(){
+  fmt.Println("==== testCat ====")
+  var cat = Cat{Mammal{Animal{"CatJim",true},10},"black"}
+  var pcat *Cat = new(Cat)
+  *pcat = cat
+  fmt.Println("cat:",cat)
+  fmt.Println("&cat:", &cat)
+  fmt.Println("pcat:", pcat)
+
+  fmt.Printf("&cat:%d\n", &cat)
+  fmt.Printf("pcat:%d\n", pcat)
 }
 
 func testMammal(){
