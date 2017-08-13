@@ -48,4 +48,12 @@ func testAnimal(){
   fmt.Println("animal", animal)
   canBreathe,err = animal.Breathe()
   fmt.Println(canBreathe,err)
+
+  fmt.Println("assign to pointer")
+  panimal := &animal
+  fmt.Printf("panimal:%s\n",panimal)
+  fmt.Println(panimal)
+  pianimal := &ianimal
+  fmt.Printf("pianimal:%s\n", pianimal)
+  fmt.Println(pianimal)
 }
