@@ -7,6 +7,7 @@ import (
 
 func main(){
   testAnimal()
+  testMammal()
 }
 
 type IAnimal interface{
@@ -16,6 +17,21 @@ type IAnimal interface{
 type Animal struct{
   name string
   alive bool
+}
+
+type Mammal struct {
+  Animal
+  age int
+}
+
+func testMammal(){
+  fmt.Println("==== testMammal ====")
+  var ianimal = Mammal{age:10}
+  fmt.Println(ianimal)
+  var mammal = ianimal
+  mammal.Animal = Animal{"Calvin", true}
+  fmt.Println("init animal object of mammal")
+  fmt.Println(mammal)
 }
 
 func (a Animal) Breathe()(canBreathe bool,err error){
