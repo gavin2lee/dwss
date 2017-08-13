@@ -48,6 +48,9 @@ type admin struct{
   level int64
 }
 
+type IAnimal interface{
+  breathe()
+}
 
 type animal struct{
   name string
@@ -56,6 +59,8 @@ type animal struct{
 
 func (a *animal) breathe(){
   fmt.Printf("%s breathing...\n",a.name)
+
+  //fmt.Println(a.(*cat))
 }
 
 type mammal struct {
@@ -103,4 +108,8 @@ func testEmbedType(){
   fmt.Println("&cat1.name", &cat1.name)
   fmt.Println("&cat1.age", &cat1.age)
   fmt.Println("&cat1.color", &cat1.color)
+
+  fmt.Println("===== interface  ===========")
+  var ianimal IAnimal = &cat1
+  ianimal.breathe()
 }
