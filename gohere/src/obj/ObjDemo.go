@@ -5,12 +5,6 @@ import (
   "errors"
 )
 
-func main(){
-  testAnimal()
-  testMammal()
-  testCat()
-}
-
 type IAnimal interface{
   Breathe() (canBreathe bool,err error)
 }
@@ -33,6 +27,31 @@ type Bird struct{
 type Cat struct{
   Mammal
   color string
+}
+
+type Owner struct{
+  name string
+  gender string
+  age int
+}
+
+type Dog struct {
+  *Mammal
+  owner Owner
+}
+
+func main(){
+  testAnimal()
+  testMammal()
+  testCat()
+  testDog()
+}
+
+func testDog(){
+  fmt.Println("==== testDog ====")
+  var dog = Dog{&Mammal{Animal{"DogCalvin",true},20},Owner{"Bob","male",50}}
+  fmt.Println("Dog:",dog)
+  fmt.Println("Mammal:", *dog.Mammal)
 }
 
 func testCat(){
