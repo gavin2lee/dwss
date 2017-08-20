@@ -32,6 +32,44 @@ func testReflect(){
   fmt.Println()
 
   printObjInfos(stud1)
+
+  fmt.Println("=== print sclice ===")
+  var ss = []string{"Alan","Bob","Cal","David","Elen","Frank"}
+  printSlice(ss)
+
+  fmt.Println("=== parse obj info ===")
+  ss = parseObjInfo(1)
+  printSlice(ss)
+
+  fmt.Println("=== parse obj info ===")
+  ss = parseObjInfo(stud1)
+  printSlice(ss)
+}
+
+func parseObjInfo(obj interface{}) (ret []string){
+  oType := reflect.TypeOf(obj)
+
+  if k:= oType.Kind(); k != reflect.Struct {
+    return make([]string,0,0)
+  }
+  var ss = make([]string,0,0)
+
+  oValue := reflect.ValueOf(obj)
+
+  for i:=0;i < oType.NumField(); i++ {
+    field := oType.Field(i)
+    value := oValue.Field(i).String()
+
+    ss = append(ss,field.Name+field.Type.Name()+value)
+  }
+
+  return ss
+}
+
+func printSlice(ss []string){
+  for _,val := range ss {
+    fmt.Println(val)
+  }
 }
 
 func printObjInfos(obj interface{}){
@@ -60,7 +98,7 @@ func printObjInfos(obj interface{}){
         fmt.Printf("%6s\n", v.FieldByIndex([]int{i,j}).Interface())
       }
     }else{
-      fmt.Printf("%6s: %v = %v \n", field.Name, field.Type, value)
+      fmt.Printf("%6s: %v = %v \n", field.Name, field.Type.Name, value)
     }
 
 
