@@ -57,19 +57,78 @@ func (p People) SayHi(){
   fmt.Printf("%s Say Hi right now\n",p.name)
 }
 
+/*
 func (p *People) Break(){
-  fmt.Printf("%s Break right now\n", p.name)
+  fmt.Printf("%s Break 1 right now\n", p.name)
+}*/
+//*
+func (p People) Break(){
+  fmt.Printf("%s Break 2 right now\n", p.name)
 }
-
+//*/
 func main(){
   testAnimal()
   testMammal()
   testCat()
   testDog()
   testPeople()
+  testDeduceType1()
+  testDeduceType2()
+}
+
+func testDeduceType2(){
+  fmt.Println("=== testDeduceType2 ===")
+  p := People{"Lily"}
+  var dog = Dog{&Mammal{Animal{"DogCalvin",true},20},Owner{"Bob","male",50}}
+  var s Speaker = People{"Kate"}
+
+  objList := make([]interface{},6)
+  objList[0],objList[1],objList[2],objList[3],objList[4]=p,dog,s,"hello",6
+
+  for idx,elmt := range objList {
+    switch val := elmt.(type) {
+    case int:
+      fmt.Printf("objList[%d] is an int,value=%d\n",idx,val)
+    case string:
+      fmt.Printf("objList[%d] is a string,value=%s\n", idx,val)
+    case People:
+      fmt.Printf("objList[%d] is a People,value=%v\n", idx,val)
+    case Dog:
+      fmt.Printf("objList[%d] is a Dog,value=%v\n", idx,val)
+    default:
+      fmt.Printf("objList[%d] is an unknown type\n", idx)
+    }
+  }
+}
+
+func testDeduceType1(){
+  fmt.Println("=== testDeduceType1 ===")
+  p := People{"Lily"}
+  var dog = Dog{&Mammal{Animal{"DogCalvin",true},20},Owner{"Bob","male",50}}
+  var s Speaker = People{"Kate"}
+
+  objList := make([]interface{},6)
+  objList[0],objList[1],objList[2],objList[3],objList[4]=p,dog,s,"hello",6
+
+  for idx,elmt := range objList {
+    if val,ok := elmt.(int); ok {
+      fmt.Printf("objList[%d] is an int,value=%d\n",idx,val)
+    }else if val,ok := elmt.(string); ok {
+      fmt.Printf("objList[%d] is a string,value=%s\n", idx,val)
+    }else if val,ok := elmt.(People); ok {
+      fmt.Printf("objList[%d] is a People,value=%v\n", idx,val)
+    }else if val,ok := elmt.(Dog); ok {
+      fmt.Printf("objList[%d] is a Dog,value=%v\n", idx,val)
+    }else if val,ok := elmt.(Speaker); ok {
+      fmt.Printf("objList[%d] is a Speaker, value = %v\n", idx,val)
+    }else{
+      fmt.Printf("objList[%d] is an unknown type\n", idx)
+    }
+  }
 }
 
 func testPeople(){
+  fmt.Println("===   testPeople ===")
   var s Speaker = People{"Kate"}
 
   s.SayHi()
