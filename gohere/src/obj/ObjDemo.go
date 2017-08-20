@@ -40,11 +40,40 @@ type Dog struct {
   owner Owner
 }
 
+type Speaker interface{
+  SayHi()
+  Break()
+}
+
+type Learner interface{
+  Study()
+}
+
+type People struct{
+  name string
+}
+
+func (p People) SayHi(){
+  fmt.Printf("%s Say Hi right now\n",p.name)
+}
+
+func (p *People) Break(){
+  fmt.Printf("%s Break right now\n", p.name)
+}
+
 func main(){
   testAnimal()
   testMammal()
   testCat()
   testDog()
+  testPeople()
+}
+
+func testPeople(){
+  var s Speaker = People{"Kate"}
+
+  s.SayHi()
+  s.Break()
 }
 
 func testDog(){
