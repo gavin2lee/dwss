@@ -4,6 +4,7 @@ import(
   "fmt"
   "obj/school"
   "reflect"
+  "strconv"
 )
 
 func main(){
@@ -47,6 +48,12 @@ func testReflect(){
 }
 
 func parseObjInfo(obj interface{}) (ret []string){
+  i := 100
+  defer func(){
+    if err := recover();err != nil {
+      fmt.Println(err, i)
+    }
+  }()
   oType := reflect.TypeOf(obj)
 
   if k:= oType.Kind(); k != reflect.Struct {
@@ -58,9 +65,9 @@ func parseObjInfo(obj interface{}) (ret []string){
 
   for i:=0;i < oType.NumField(); i++ {
     field := oType.Field(i)
-    value := oValue.Field(i).String()
+    value := oValue.Field(i).Int()
 
-    ss = append(ss,field.Name+field.Type.Name()+value)
+    ss = append(ss,field.Name+":"+field.Type.Name()+strconv.FormatInt(value,10))
   }
 
   return ss
