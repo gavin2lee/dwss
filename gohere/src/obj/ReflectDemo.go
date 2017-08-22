@@ -4,7 +4,7 @@ import(
   "fmt"
   "obj/school"
   "reflect"
-  "strconv"
+//  "strconv"
 )
 
 func main(){
@@ -26,7 +26,7 @@ func testReflect(){
 
   fmt.Printf("stud1:%v\n", stud1)
 
-  stud1.People = school.People{1000,"Kalvin","male",true}
+  stud1.People = school.People{school.Id{1000,"Kalvin","male"},true}
 
   fmt.Printf("stud1:%v\n", stud1)
 
@@ -39,16 +39,22 @@ func testReflect(){
   printSlice(ss)
 
   fmt.Println("=== parse obj info ===")
-  ss = parseObjInfo(1)
+  ss = parseObjInfo(1,0)
   printSlice(ss)
 
   fmt.Println("=== parse obj info ===")
-  ss = parseObjInfo(stud1)
+  ss = parseObjInfo(stud1,0)
   printSlice(ss)
 }
 
-func parseObjInfo(obj interface{}) (ret []string){
+func parseObjInfo(obj interface{},indent int) (ret []string){
   i := 100
+
+  strIndent := ""
+  for i:=0;i<indent;i++{
+    strIndent = strIndent + "-"
+  }
+
   defer func(){
     if err := recover();err != nil {
       fmt.Println(err, i)
@@ -65,9 +71,18 @@ func parseObjInfo(obj interface{}) (ret []string){
 
   for i:=0;i < oType.NumField(); i++ {
     field := oType.Field(i)
-    value := oValue.Field(i).Int()
+    value := oValue.Field(i).Interface()
 
-    ss = append(ss,field.Name+":"+field.Type.Name()+strconv.FormatInt(value,10))
+    if k:=field.Type.Kind(); k == reflect.Struct {
+      ss = append(ss,strIndent+field.Name+":"+field.Type.Name() + " ->")
+      for _,val := range parseObjInfo(value, indent+1) {
+        ss = append(ss,val)
+      }
+
+    }else{
+      ss = append(ss,strIndent+field.Name+":"+field.Type.Name() + " -> "+fmt.Sprintf("%v",value))
+    }
+
   }
 
   return ss

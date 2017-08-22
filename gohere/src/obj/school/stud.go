@@ -4,10 +4,14 @@ import(
   "fmt"
 )
 
-type People struct{
-  Id int
+type Id struct{
+  SerialNo int
   Name string
   Gender string
+}
+
+type People struct{
+  Id
   IsAdult bool
 }
 
@@ -39,7 +43,7 @@ func (p People) SayHi(){
 
 func (p People) GetIdentifier()(id int,name string){
   fmt.Printf("%s Get Identifier\n",p.Name)
-  var localId = p.Id
+  var localId = p.SerialNo
   var localName = p.Name
   return localId,localName
 }
