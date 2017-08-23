@@ -17,6 +17,9 @@ func main(){
 
   objutils.CheckError(err)
 
+  fmt.Println("=== tcpserver started ===")
+  fmt.Println("listening ",tcpAddr.String())
+
   for{
     conn,err := listener.Accept()
     if err != nil {
@@ -30,6 +33,7 @@ func main(){
 }
 
 func handleClient(conn net.Conn){
+  fmt.Println("=== handleClient ===")
   var buf [512]byte
   for{
     n,err := conn.Read(buf[0:])

@@ -4,10 +4,13 @@ import(
   "fmt"
   "net"
   "os"
+
+  "time"
+
   "common/objutils"
 )
 
-func main(){
+func startClient(clientName string,ch chan int){
   var buf [512]byte
 
   if len(os.Args) != 2 {
@@ -24,14 +27,40 @@ func main(){
   objutils.CheckError(err)
 
   rAddr := conn.RemoteAddr()
-  n,err := conn.Write([]byte("Hello Server!"))
-  objutils.CheckError(err)
+  for i:=0;i<10;i++ {
+    _,err := conn.Write([]byte(fmt.Sprintf("Hello Server! I'm %s-%d \n",clientName, i)))
+    objutils.CheckError(err)
 
-  n,err = conn.Read(buf[0:])
-  objutils.CheckError(err)
+    n,err := conn.Read(buf[0:])
+    objutils.CheckError(err)
 
-  fmt.Println("Reply from server ", rAddr.String(), string(buf[0:n]))
+    fmt.Println(clientName + " - Reply from server ", rAddr.String(), string(buf[0:n]))
+
+    time.Sleep(1 * time.Second)
+  }
+
+
   conn.Close()
+
+  ch <- 1
+  return
+}
+
+func main(){
+  clientNames := []string{"A","B","C","D","E","F"}
+  chs := make([]chan int,len(clientNames))
+  for i:=0; i<len(clientNames);i++{
+    chs[i] = make(chan int)
+    go startClient(clientNames[i],chs[i])
+  }
+
+  retNum := 0
+  for _,ch := range chs {
+    val := <- ch
+    retNum = retNum + val
+  }
+
+  fmt.Println("retNum: ", retNum)
 
   os.Exit(0)
 }
