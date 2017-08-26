@@ -59,7 +59,7 @@ func main() {
 		fmt.Println("Reply from server ", addr.String(), string(buf[0:n]))
 
 		
-		time.Sleep(1*time.Second)
+		time.Sleep(5*time.Second)
 	}
 }
 
