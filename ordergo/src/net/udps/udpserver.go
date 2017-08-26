@@ -33,6 +33,8 @@ func handleUdpClient(conn * net.UDPConn){
     }
     
     fmt.Println("Recv from client ", addr.String(), string(buf[0:n]))
-    conn.WriteToUDP([]byte("Welcome Client"), addr)
+    n,err = conn.WriteToUDP([]byte("Welcome Client"), addr)
+    
+    fmt.Println("State:", n, "-",err)
 }
 
