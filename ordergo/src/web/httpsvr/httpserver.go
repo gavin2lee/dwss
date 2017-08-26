@@ -14,7 +14,7 @@ func simpleRootDefaultFuncHandler(w http.ResponseWriter, r *http.Request) {
 	objutils.CheckError(err)
 	fmt.Println(r.Form)
 	fmt.Println("path", r.URL.Path)
-	fmt.Println("schema", r.URL.Schema)
+	fmt.Println("schema", r.URL.Scheme)
 	fmt.Println(r.Form["url_long"])
 
 	for k, v := range r.Form {
