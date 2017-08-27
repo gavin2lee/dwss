@@ -3,3 +3,4 @@
 echo "Copy resources to bin"
 
 cp -frv views ../bin/
+
