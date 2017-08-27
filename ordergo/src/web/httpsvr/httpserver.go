@@ -6,6 +6,8 @@ import (
 	"net/http"
 	"html/template"
 	"strings"
+	
+	"os"
 
 	"common/objutils"
 )
@@ -45,11 +47,25 @@ func login(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
+    var service string
+    if len(os.Args) > 1 {
+        service = os.Args[1]
+    }else{
+        service = ":9999"
+    }
+    
 	http.HandleFunc("/", simpleRootDefaultFuncHandler)
 	http.HandleFunc("/login", login)
-	err := http.ListenAndServe(":9999", nil)
+	
+	fmt.Println("http listen "+service)
+	log.Println("http server listen "+service)
+	
+	err := http.ListenAndServe(service, nil)
 
 	if err != nil {
 		log.Fatalf("ListenAndServe", err)
 	}
+	
+	fmt.Println("2 http listen "+service)
+	log.Println("2 http server listen "+service)
 }
