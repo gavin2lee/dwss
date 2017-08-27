@@ -30,7 +30,11 @@ func login(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("method:", r.Method)
 
 	if r.Method == "GET" {
-		t, _ := template.ParseFiles("view/tpl/login/login.gtpl")
+		t, err := template.ParseFiles("view/tpl/login/login.gtpl")
+		if err != nil {
+		    fmt.Println(err)
+		    log.Fatalf("ParseFiles",err)
+		}
 		t.Execute(w, nil)
 	} else {
 		fmt.Println("username:", r.Form["username"])
