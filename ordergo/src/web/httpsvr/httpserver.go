@@ -28,6 +28,8 @@ func simpleRootDefaultFuncHandler(w http.ResponseWriter, r *http.Request) {
 
 func login(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("method:", r.Method)
+	
+	r.ParseForm()
 
 	if r.Method == "GET" {
 		t, err := template.ParseFiles("view/tpl/login/login.gtpl")
