@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"html/template"
 	"strings"
 
 	"common/objutils"
@@ -14,7 +15,7 @@ func simpleRootDefaultFuncHandler(w http.ResponseWriter, r *http.Request) {
 	objutils.CheckError(err)
 	fmt.Println(r.Form)
 	fmt.Println("path", r.URL.Path)
-	fmt.Println("schema", r.URL.Scheme)
+	fmt.Println("scheme", r.URL.Scheme)
 	fmt.Println(r.Form["url_long"])
 
 	for k, v := range r.Form {
@@ -25,11 +26,24 @@ func simpleRootDefaultFuncHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Hello http client!")
 }
 
+func login(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("method:", r.Method)
+
+	if r.Method == "GET" {
+		t, _ := template.ParseFiles("view/tpl/login/login.gtpl")
+		t.Execute(w, nil)
+	} else {
+		fmt.Println("username:", r.Form["username"])
+		fmt.Println("password:", r.Form["password"])
+	}
+}
+
 func main() {
-    http.HandleFunc("/", simpleRootDefaultFuncHandler)
-    err := http.ListenAndServe(":9999", nil)
-    
-    if err != nil {
-        log.Fatalf("ListenAndServe", err)
-    }
+	http.HandleFunc("/", simpleRootDefaultFuncHandler)
+	http.HandleFunc("/login", login)
+	err := http.ListenAndServe(":9999", nil)
+
+	if err != nil {
+		log.Fatalf("ListenAndServe", err)
+	}
 }
