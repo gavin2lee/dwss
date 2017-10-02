@@ -5,7 +5,7 @@ import com.gl.fsm.core.StateContext;
 public class PseduState extends State {
 
 	public PseduState() {
-		super("S00", "PseduState");
+		super(StateDescription.PSEDU, StateDescription.PSEDU_NAME);
 	}
 
 	@Override

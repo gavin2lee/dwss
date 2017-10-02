@@ -9,6 +9,9 @@ public class LeaveApplication extends StateableObject {
 	private Date updatedAt;
 	private String updatedBy;
 
+	private String firstApprover;
+	private String secondApprover;
+
 	public String getUsername() {
 		return username;
 	}
@@ -49,11 +52,27 @@ public class LeaveApplication extends StateableObject {
 		this.updatedBy = updatedBy;
 	}
 
+	public String getFirstApprover() {
+		return firstApprover;
+	}
+
+	public void setFirstApprover(String firstApprover) {
+		this.firstApprover = firstApprover;
+	}
+
+	public String getSecondApprover() {
+		return secondApprover;
+	}
+
+	public void setSecondApprover(String secondApprover) {
+		this.secondApprover = secondApprover;
+	}
+
 	@Override
 	public String toString() {
+		String state = (getCurrentState() == null ? "null" : getCurrentState().getStateName());
 		return "LeaveApplication [username=" + username + ", daysToApply=" + daysToApply + ", createdAt=" + createdAt
-				+ ", updatedAt=" + updatedAt + ", updatedBy=" + updatedBy + ",state=" + getCurrentState().getStateName()
-				+ "]";
+				+ ", updatedAt=" + updatedAt + ", updatedBy=" + updatedBy + ",state=" + state + "]";
 	}
 
 }

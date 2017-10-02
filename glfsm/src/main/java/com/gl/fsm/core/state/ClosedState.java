@@ -1,11 +1,12 @@
 package com.gl.fsm.core.state;
 
 import com.gl.fsm.core.StateContext;
+import static com.gl.fsm.core.state.StateDescription.*;
 
 public class ClosedState extends State {
 
 	public ClosedState() {
-		super("S4", "Closed");
+		super(CLOSED, CLOSED_NAME);
 	}
 
 	@Override

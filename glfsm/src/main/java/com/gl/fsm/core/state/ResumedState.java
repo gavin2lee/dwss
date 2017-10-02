@@ -1,11 +1,12 @@
 package com.gl.fsm.core.state;
 
 import com.gl.fsm.core.StateContext;
+import static com.gl.fsm.core.state.StateDescription.*;
 
 public class ResumedState extends State {
 
 	public ResumedState() {
-		super("S3", "Resumed");
+		super(RESUMED, RESUMED_NAME);
 	}
 
 	@Override

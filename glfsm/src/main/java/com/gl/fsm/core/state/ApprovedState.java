@@ -1,11 +1,12 @@
 package com.gl.fsm.core.state;
 
 import com.gl.fsm.core.StateContext;
+import static com.gl.fsm.core.state.StateDescription.*;
 
 public class ApprovedState extends State {
 
 	public ApprovedState() {
-		super("S2", "Approved");
+		super(APPROVED, APPROVED_NAME);
 	}
 
 	@Override

@@ -1,6 +1,8 @@
 package com.gl.fsm.core.state;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import com.gl.fsm.core.DefaultTransitionCalculator;
@@ -13,14 +15,22 @@ public abstract class State {
 	private String stateCode;
 	private String stateName;
 	protected Set<Transition> potentialTransitions = new HashSet<Transition>();
-	protected TransitionCalculator transitionCalculator = new DefaultTransitionCalculator();
-	
-	
+	protected List<TransitionCalculator> transitionCalculators = new ArrayList<TransitionCalculator>();
+	protected TransitionCalculator defaultTransitionCalculator = new DefaultTransitionCalculator();
+
+	private boolean autoTransit = false;
 
 	public State(String stateCode, String stateName) {
+		this(stateCode, stateName, false);
+	}
+
+	public State(String stateCode, String stateName, boolean autoTransit) {
 		super();
 		this.stateCode = stateCode;
 		this.stateName = stateName;
+		this.autoTransit = autoTransit;
+
+		transitionCalculators.add(defaultTransitionCalculator);
 	}
 
 	public void process(StateContext ctx) {
@@ -37,8 +47,23 @@ public abstract class State {
 			ctx.getObject().setCurrentState(this);
 		}
 
-		Transition target = transitionCalculator.calculate(ctx);
+		Transition target = null;
+		for (TransitionCalculator transitionCalculator : transitionCalculators) {
+			target = transitionCalculator.calculate(ctx);
+			if (target != null) {
+				break;
+			}
+		}
+
+		if (target == null) {
+			System.err.println(Transition.class.getSimpleName() + " cannot be found");
+			return;
+		}
 		target.fire(ctx, fsm);
+	}
+
+	public boolean isAutoTransit() {
+		return autoTransit;
 	}
 
 	public String getStateCode() {
@@ -64,11 +89,27 @@ public abstract class State {
 	public void setPotentialTransitions(Set<Transition> potentialTransitions) {
 		this.potentialTransitions = potentialTransitions;
 	}
-	
-	public void addPotentialTransitions(Transition...transitions) {
-		for(Transition t : transitions) {
+
+	public Transition findTransition(String transitionCode) {
+		Transition target = null;
+		for (Transition t : this.getPotentialTransitions()) {
+			if (transitionCode.equals(t.getTransitionCode())) {
+				target = t;
+				break;
+			}
+		}
+
+		return target;
+	}
+
+	public void addPotentialTransitions(Transition... transitions) {
+		for (Transition t : transitions) {
 			getPotentialTransitions().add(t);
 		}
+	}
+
+	public void setTransitionCalculator(TransitionCalculator transitionCalculator) {
+		this.transitionCalculators.add(transitionCalculator);
 	}
 
 	@Override

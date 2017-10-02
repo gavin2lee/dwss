@@ -1,11 +1,12 @@
 package com.gl.fsm.core.state;
 
 import com.gl.fsm.core.StateContext;
+import static com.gl.fsm.core.state.StateDescription.*;
 
 public class RejectedState extends State {
 
 	public RejectedState() {
-		super("S6", "Rejected");
+		super(REJECTED, REJECTED_NAME);
 	}
 
 	@Override

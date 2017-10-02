@@ -8,14 +8,20 @@ public class DefaultTransitionCalculator extends TransitionCalculator {
 			throw new IllegalStateException("No transition found!");
 		}
 
-		if (ctx.getObject().getCurrentState().getPotentialTransitions().size() > 1) {
-			throw new UnsupportedOperationException("Not supported");
-		}
-
 		Transition target = null;
-		for (Transition t : ctx.getObject().getCurrentState().getPotentialTransitions()) {
-			target = t;
-			break;
+
+		if (ctx.getObject().getCurrentState().getPotentialTransitions().size() == 1) {
+			for (Transition t : ctx.getObject().getCurrentState().getPotentialTransitions()) {
+				target = t;
+				break;
+			}
+		} else {
+			for (Transition t : ctx.getObject().getCurrentState().getPotentialTransitions()) {
+				if(t.tryMatch(ctx)) {
+					target = t;
+					break;
+				}
+			}
 		}
 
 		return target;

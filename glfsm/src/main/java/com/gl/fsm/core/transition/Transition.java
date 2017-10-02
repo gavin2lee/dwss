@@ -1,5 +1,8 @@
 package com.gl.fsm.core.transition;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.gl.fsm.core.FiniteStateManager;
 import com.gl.fsm.core.StateContext;
 import com.gl.fsm.core.state.State;
@@ -9,11 +12,23 @@ public abstract class Transition {
 	private String transitionName;
 	private State firedState;
 
+	private TransitionMatcher transitionMatcher;
+
+	private List<TransitionValidator> preTransitionValidators = new ArrayList<TransitionValidator>();
+
 	public Transition(String transitionCode, String transitionName, State firedState) {
 		super();
 		this.transitionCode = transitionCode;
 		this.transitionName = transitionName;
 		this.firedState = firedState;
+	}
+
+	public boolean tryMatch(StateContext ctx) {
+		if (transitionMatcher != null) {
+			return transitionMatcher.match(ctx);
+		}
+
+		return false;
 	}
 
 	public String getTransitionCode() {
@@ -28,9 +43,57 @@ public abstract class Transition {
 		return firedState;
 	}
 
-	public void fire(StateContext ctx,FiniteStateManager fsm) {
+	public boolean preFire(StateContext ctx, FiniteStateManager fsm) {
+		if (preTransitionValidators == null || preTransitionValidators.isEmpty()) {
+			return true;
+		}
+
+		for (TransitionValidator v : preTransitionValidators) {
+			if (v.validate(ctx) == false) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	public void fire(StateContext ctx, FiniteStateManager fsm) {
+		if (!preFire(ctx, fsm)) {
+			System.err.println("Cannot proceed and validation failed");
+			return;
+		}
+
 		System.out.println(String.format("Fire - %s", ctx));
 		fsm.fire(ctx, firedState);
+	}
+
+	public TransitionMatcher getTransitionMatcher() {
+		return transitionMatcher;
+	}
+
+	public void setTransitionMatcher(TransitionMatcher transitionMatcher) {
+		this.transitionMatcher = transitionMatcher;
+	}
+
+	public List<TransitionValidator> getPreTransitionValidators() {
+		return preTransitionValidators;
+	}
+
+	public void setPreTransitionValidators(List<TransitionValidator> preTransitionValidators) {
+		this.preTransitionValidators = preTransitionValidators;
+	}
+
+	public void setPreTransitionValidator(TransitionValidator validator) {
+		if (preTransitionValidators != null) {
+			preTransitionValidators.add(validator);
+		}
+	}
+
+	@Override
+	public String toString() {
+		String state = (getFiredState() == null ? "null" : getFiredState().getStateName());
+		return "Transition [transitionCode=" + transitionCode + ", transitionName=" + transitionName + ", firedState="
+				+ state + "]";
 	}
 
 	@Override
@@ -63,6 +126,5 @@ public abstract class Transition {
 			return false;
 		return true;
 	}
-	
-	
+
 }

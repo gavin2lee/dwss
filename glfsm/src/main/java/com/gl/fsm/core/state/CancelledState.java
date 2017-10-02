@@ -5,13 +5,11 @@ import com.gl.fsm.core.StateContext;
 public class CancelledState extends State {
 
 	public CancelledState() {
-		super("S5", "Cancelled");
-		// TODO Auto-generated constructor stub
+		super("S5", "CancelledState");
 	}
 
 	@Override
 	protected void internalProcess(StateContext ctx) {
-		// TODO Auto-generated method stub
 
 	}
 
