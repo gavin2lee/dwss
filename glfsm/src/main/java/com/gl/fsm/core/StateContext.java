@@ -1,47 +1,45 @@
 package com.gl.fsm.core;
 
+import com.gl.fsm.core.event.Event;
 import com.gl.fsm.core.state.State;
 
 public class StateContext {
-	private String username;
-	private Command command;
-	private StateableObject object;
+    private State state;
+    private Event<?> event;
+    private Object data;
 
-	public String getUsername() {
-		return username;
-	}
+    private FiniteStateManager fsm;
 
-	public void setUsername(String username) {
-		this.username = username;
-	}
+    public State getState() {
+        return state;
+    }
 
-	public Command getCommand() {
-		return command;
-	}
+    public void setState(State state) {
+        this.state = state;
+    }
 
-	public void setCommand(Command command) {
-		this.command = command;
-	}
+    public Event<?> getEvent() {
+        return event;
+    }
 
-	public StateableObject getObject() {
-		return object;
-	}
+    public void setEvent(Event<?> event) {
+        this.event = event;
+    }
 
-	public void setObject(StateableObject object) {
-		this.object = object;
-	}
+    public Object getData() {
+        return data;
+    }
 
-	public StateContext setState(State state) {
-		if (getObject() != null) {
-			getObject().setCurrentState(state);
-		}
-		
-		return this;
-	}
+    public void setData(Object data) {
+        this.data = data;
+    }
 
-	@Override
-	public String toString() {
-		return "StateContext [username=" + username + ", command=" + command + ", object=" + object + "]";
-	}
+    public FiniteStateManager getFsm() {
+        return fsm;
+    }
+
+    public void setFsm(FiniteStateManager fsm) {
+        this.fsm = fsm;
+    }
 
 }

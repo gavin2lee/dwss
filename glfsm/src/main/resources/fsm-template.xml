@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<fsms>
+  <fsm id="fsm-0">
+    <state id="s0" name="STOPPED" />
+    <state id="s1" name="PLAYING" />
+    <state id="s2" name="PAUSED" />
+    
+    <event-type id="et0" name="play"/>
+    <event-type id="et1" name="pause" />
+    <event-type id="et2" name="stop" />
+    
+    <transition-vote-policy id="tms-and" name="tms-and"/>
+    <transition-vote-policy id="tms-or" name="tms-or"/>
+    
+    <transition id="t0" inState="s0" outState="s1" />
+    <transition id="t1" inState="s1" outState="s2" >
+      <transition-vote-policy ref="tms-and"/>
+      <transition-voters>
+        <transition-voter id="tm0" name="event"/>
+      </transition-voters>
+    </transition>
+  </fsm>
+</fsms>

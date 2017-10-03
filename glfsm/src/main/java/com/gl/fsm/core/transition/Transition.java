@@ -8,123 +8,108 @@ import com.gl.fsm.core.StateContext;
 import com.gl.fsm.core.state.State;
 
 public abstract class Transition {
-	private String transitionCode;
-	private String transitionName;
-	private State firedState;
+    private String id;
+    private String name;
 
-	private TransitionMatcher transitionMatcher;
+    private State inState;
+    private State outState;
 
-	private List<TransitionValidator> preTransitionValidators = new ArrayList<TransitionValidator>();
+    private List<TransitionVoter> transitionVoters = new ArrayList<TransitionVoter>();
+    private TransitionVotePolicy transitionVotePolicy;
 
-	public Transition(String transitionCode, String transitionName, State firedState) {
-		super();
-		this.transitionCode = transitionCode;
-		this.transitionName = transitionName;
-		this.firedState = firedState;
-	}
+    public Transition(String id, String name) {
+        super();
+        this.id = id;
+        this.name = name;
+    }
 
-	public boolean tryMatch(StateContext ctx) {
-		if (transitionMatcher != null) {
-			return transitionMatcher.match(ctx);
-		}
+    public void fire(StateContext ctx) {
+        FiniteStateManager fsm = ctx.getFsm();
+        State nextState = this.getOutState();
+        if (nextState != null) {
+            fsm.fire(ctx, nextState);
+        }
+    }
 
-		return false;
-	}
+    public boolean vote(StateContext ctx) {
+        if (transitionVotePolicy != null) {
+            return transitionVotePolicy.vote(this, ctx);
+        }
 
-	public String getTransitionCode() {
-		return transitionCode;
-	}
+        return false;
+    }
 
-	public String getTransitionName() {
-		return transitionName;
-	}
+    public List<TransitionVoter> getTransitionVoters() {
+        return transitionVoters;
+    }
 
-	public State getFiredState() {
-		return firedState;
-	}
+    public void setTransitionVoters(List<TransitionVoter> transitionVoters) {
+        if (transitionVoters != null) {
+            this.transitionVoters.addAll(transitionVoters);
+        }
+    }
 
-	public boolean preFire(StateContext ctx, FiniteStateManager fsm) {
-		if (preTransitionValidators == null || preTransitionValidators.isEmpty()) {
-			return true;
-		}
+    public void addTranstionVoters(TransitionVoter... transitionVoters) {
+        for (TransitionVoter voter : transitionVoters) {
+            this.transitionVoters.add(voter);
+        }
+    }
 
-		for (TransitionValidator v : preTransitionValidators) {
-			if (v.validate(ctx) == false) {
-				return false;
-			}
-		}
+    public TransitionVotePolicy getTransitionVotePolicy() {
+        return transitionVotePolicy;
+    }
 
-		return true;
-	}
+    public void setTransitionVotePolicy(TransitionVotePolicy transitionVotePolicy) {
+        this.transitionVotePolicy = transitionVotePolicy;
+    }
 
-	public void fire(StateContext ctx, FiniteStateManager fsm) {
-		if (!preFire(ctx, fsm)) {
-			System.err.println("Cannot proceed and validation failed");
-			return;
-		}
+    public String getId() {
+        return id;
+    }
 
-		System.out.println(String.format("Fire - %s", ctx));
-		fsm.fire(ctx, firedState);
-	}
+    public String getName() {
+        return name;
+    }
 
-	public TransitionMatcher getTransitionMatcher() {
-		return transitionMatcher;
-	}
+    public State getInState() {
+        return inState;
+    }
 
-	public void setTransitionMatcher(TransitionMatcher transitionMatcher) {
-		this.transitionMatcher = transitionMatcher;
-	}
+    public void setInState(State inState) {
+        this.inState = inState;
+    }
 
-	public List<TransitionValidator> getPreTransitionValidators() {
-		return preTransitionValidators;
-	}
+    public State getOutState() {
+        return outState;
+    }
 
-	public void setPreTransitionValidators(List<TransitionValidator> preTransitionValidators) {
-		this.preTransitionValidators = preTransitionValidators;
-	}
+    public void setOutState(State outState) {
+        this.outState = outState;
+    }
 
-	public void setPreTransitionValidator(TransitionValidator validator) {
-		if (preTransitionValidators != null) {
-			preTransitionValidators.add(validator);
-		}
-	}
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        return result;
+    }
 
-	@Override
-	public String toString() {
-		String state = (getFiredState() == null ? "null" : getFiredState().getStateName());
-		return "Transition [transitionCode=" + transitionCode + ", transitionName=" + transitionName + ", firedState="
-				+ state + "]";
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((transitionCode == null) ? 0 : transitionCode.hashCode());
-		result = prime * result + ((transitionName == null) ? 0 : transitionName.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Transition other = (Transition) obj;
-		if (transitionCode == null) {
-			if (other.transitionCode != null)
-				return false;
-		} else if (!transitionCode.equals(other.transitionCode))
-			return false;
-		if (transitionName == null) {
-			if (other.transitionName != null)
-				return false;
-		} else if (!transitionName.equals(other.transitionName))
-			return false;
-		return true;
-	}
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Transition other = (Transition) obj;
+        if (id == null) {
+            if (other.id != null)
+                return false;
+        } else if (!id.equals(other.id))
+            return false;
+        return true;
+    }
 
 }

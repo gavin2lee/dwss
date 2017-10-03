@@ -1,121 +1,117 @@
 package com.gl.fsm.core.state;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
-import com.gl.fsm.core.DefaultTransitionCalculator;
-import com.gl.fsm.core.FiniteStateManager;
 import com.gl.fsm.core.StateContext;
-import com.gl.fsm.core.TransitionCalculator;
 import com.gl.fsm.core.transition.Transition;
 
 public abstract class State {
-	private String stateCode;
-	private String stateName;
-	protected Set<Transition> potentialTransitions = new HashSet<Transition>();
-	protected List<TransitionCalculator> transitionCalculators = new ArrayList<TransitionCalculator>();
-	protected TransitionCalculator defaultTransitionCalculator = new DefaultTransitionCalculator();
+    private String id;
+    private String name;
+    private boolean autoTransit;
 
-	private boolean autoTransit = false;
+    private Set<Transition> inTransitions = new HashSet<Transition>();
+    private Set<Transition> outTransitions = new HashSet<Transition>();
 
-	public State(String stateCode, String stateName) {
-		this(stateCode, stateName, false);
-	}
+    private StateTransitor stateTransitor;
 
-	public State(String stateCode, String stateName, boolean autoTransit) {
-		super();
-		this.stateCode = stateCode;
-		this.stateName = stateName;
-		this.autoTransit = autoTransit;
+    private StateProcessor stateProcessor;
 
-		transitionCalculators.add(defaultTransitionCalculator);
-	}
+    public State(String id, String name) {
+        this(id, name, false);
+    }
 
-	public void process(StateContext ctx) {
-		System.out.println(String.format("Process - %s", ctx));
-		System.out.println(this.getClass().getSimpleName());
-		internalProcess(ctx);
-		System.out.println("== Processed ==");
-	}
+    public State(String id, String name, boolean autoTransit) {
+        this.id = id;
+        this.name = name;
+        this.autoTransit = autoTransit;
 
-	public void transit(StateContext ctx, FiniteStateManager fsm) {
-		System.out.println(String.format("Transit - %s", ctx));
+        init();
+    }
 
-		if (ctx.getObject().getCurrentState() == null) {
-			ctx.getObject().setCurrentState(this);
-		}
+    protected void init() {
+        if (stateTransitor == null) {
+            stateTransitor = new DefaultStateTransitor();
+        }
+    }
 
-		Transition target = null;
-		for (TransitionCalculator transitionCalculator : transitionCalculators) {
-			target = transitionCalculator.calculate(ctx);
-			if (target != null) {
-				break;
-			}
-		}
+    public void transit(StateContext ctx) {
+        stateTransitor.transit(this, ctx);
+    }
 
-		if (target == null) {
-			System.err.println(Transition.class.getSimpleName() + " cannot be found");
-			return;
-		}
-		target.fire(ctx, fsm);
-	}
+    public void process(StateContext ctx) {
+        if (stateProcessor != null) {
+            stateProcessor.process(ctx);
+        }
+    }
 
-	public boolean isAutoTransit() {
-		return autoTransit;
-	}
+    public String getId() {
+        return id;
+    }
 
-	public String getStateCode() {
-		return stateCode;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setStateCode(String stateCode) {
-		this.stateCode = stateCode;
-	}
+    public boolean isAutoTransit() {
+        return autoTransit;
+    }
 
-	public String getStateName() {
-		return stateName;
-	}
+    public Set<Transition> getInTransitions() {
+        return inTransitions;
+    }
 
-	public void setStateName(String stateName) {
-		this.stateName = stateName;
-	}
+    public void setInTransitions(Set<Transition> inTransitions) {
+        if (inTransitions != null) {
 
-	public Set<Transition> getPotentialTransitions() {
-		return potentialTransitions;
-	}
+            this.inTransitions.addAll(inTransitions);
+        }
+    }
 
-	public void setPotentialTransitions(Set<Transition> potentialTransitions) {
-		this.potentialTransitions = potentialTransitions;
-	}
+    public void addInTransitions(Transition... transitions) {
+        for (Transition t : transitions) {
+            this.inTransitions.add(t);
+        }
+    }
 
-	public Transition findTransition(String transitionCode) {
-		Transition target = null;
-		for (Transition t : this.getPotentialTransitions()) {
-			if (transitionCode.equals(t.getTransitionCode())) {
-				target = t;
-				break;
-			}
-		}
+    public Set<Transition> getOutTransitions() {
+        return outTransitions;
+    }
 
-		return target;
-	}
+    public void setOutTransitions(Set<Transition> outTransitions) {
+        if (outTransitions != null) {
 
-	public void addPotentialTransitions(Transition... transitions) {
-		for (Transition t : transitions) {
-			getPotentialTransitions().add(t);
-		}
-	}
+            this.outTransitions.addAll(outTransitions);
+        }
+    }
 
-	public void setTransitionCalculator(TransitionCalculator transitionCalculator) {
-		this.transitionCalculators.add(transitionCalculator);
-	}
+    public void addOutTransitions(Transition... transitions) {
+        for (Transition t : transitions) {
+            this.outTransitions.add(t);
+        }
+    }
 
-	@Override
-	public String toString() {
-		return "State [stateCode=" + stateCode + ", stateName=" + stateName + "]";
-	}
+    public StateTransitor getStateTransitor() {
+        return stateTransitor;
+    }
 
-	protected abstract void internalProcess(StateContext ctx);
+    public void setStateTransitor(StateTransitor stateTransitor) {
+        this.stateTransitor = stateTransitor;
+    }
+
+    public StateProcessor getStateProcessor() {
+        return stateProcessor;
+    }
+
+    public void setStateProcessor(StateProcessor stateProcessor) {
+        this.stateProcessor = stateProcessor;
+    }
+
+    @Override
+    public String toString() {
+        return "State [id=" + id + ", name=" + name + "]";
+    }
+    
+
 }
