@@ -10,6 +10,7 @@ public abstract class StateTransitor {
     public void transit(State state, StateContext ctx) {
         Transition selectedTransition = voteTransition(state, ctx);
         if (selectedTransition == null) {
+            System.err.println("No transition selected");
             return;
         }
 
@@ -30,6 +31,7 @@ public abstract class StateTransitor {
         }
 
         if (count > 1) {
+            System.err.println("More than one transitions found!");
             throw new RuntimeException("More than one transitions found!");
         }
 

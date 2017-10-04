@@ -6,12 +6,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.gl.fsm.core.event.Event;
 import com.gl.fsm.core.state.State;
 import com.gl.fsm.core.state.StateListener;
 
 public class FiniteStateManager {
     private State currentState;
     private State previousState;
+    private State pseduState;
     private List<State> firedStates = new ArrayList<State>();
     private Set<StateListener> stateListeners = new HashSet<StateListener>();
     
@@ -22,6 +24,24 @@ public class FiniteStateManager {
     
     private void init(){
         
+    }
+    
+    public void handleEvent(Event<?> event){
+        if(getCurrentState() == null){
+            if(getPseduState() != null){
+                setCurrentState(getPseduState());
+            }else{
+                throw new RuntimeException("Donot know how to start");
+            }
+        }
+        
+        StateContext ctx = new StateContext();
+        ctx.setData(event.getEventData());
+        ctx.setState(getCurrentState());
+        ctx.setEvent(event);
+        ctx.setFsm(this);
+        
+        getCurrentState().transit(ctx);
     }
 
     public void fire(StateContext ctx, State nextState) {
@@ -89,6 +109,14 @@ public class FiniteStateManager {
         for (StateListener listener : listeners) {
             this.stateListeners.add(listener);
         }
+    }
+
+    public State getPseduState() {
+        return pseduState;
+    }
+
+    public void setPseduState(State pseduState) {
+        this.pseduState = pseduState;
     }
 
 }

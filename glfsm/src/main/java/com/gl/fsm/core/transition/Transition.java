@@ -24,6 +24,7 @@ public abstract class Transition {
     }
 
     public void fire(StateContext ctx) {
+        System.out.println(this.getClass().getSimpleName() + " fire : "+this);
         FiniteStateManager fsm = ctx.getFsm();
         State nextState = this.getOutState();
         if (nextState != null) {
@@ -36,7 +37,7 @@ public abstract class Transition {
             return transitionVotePolicy.vote(this, ctx);
         }
 
-        return false;
+        return true;
     }
 
     public List<TransitionVoter> getTransitionVoters() {
@@ -77,6 +78,9 @@ public abstract class Transition {
 
     public void setInState(State inState) {
         this.inState = inState;
+        if(this.inState != null){
+           this.inState.addOutTransitions(this); 
+        }
     }
 
     public State getOutState() {
@@ -85,6 +89,16 @@ public abstract class Transition {
 
     public void setOutState(State outState) {
         this.outState = outState;
+        if(this.outState != null){
+            this.outState.addInTransitions(this);
+        }
+    }
+    
+    
+
+    @Override
+    public String toString() {
+        return "Transition [id=" + id + ", name=" + name + "]";
     }
 
     @Override
