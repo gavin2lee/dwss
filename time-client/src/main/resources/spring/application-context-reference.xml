@@ -17,6 +17,9 @@
 
   <!-- 生成远程服务代理，可以像使用本地bean一样使用demoService -->
   <dubbo:reference id="genericService" generic="true"
+    loadbalance="leastactive"
+    cluster="failover"
+    retries="2"
     interface="com.gl.time.server.provider.TimeProvider" 
     version="1.0" />
 

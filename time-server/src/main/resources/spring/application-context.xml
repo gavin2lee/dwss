@@ -24,6 +24,13 @@
     <dubbo:protocol name="dubbo" port="20882" />  
    
     <!-- 声明需要暴露的服务接口 -->  
-    <dubbo:service interface="com.gl.time.server.provider.TimeProvider" ref="concreteTimeService" version="1.0" />  
+    <dubbo:service interface="com.gl.time.server.provider.TimeProvider" 
+    ref="concreteTimeService" 
+    loadbalance="random"
+    token="123456"
+    accesslog="true"
+    cluster="failover"
+    retries="2"
+    version="1.0" />  
       
 </beans> 
